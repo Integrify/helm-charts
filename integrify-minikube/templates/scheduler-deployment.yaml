@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.scheduler.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.scheduler.replicas }}
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.scheduler.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.scheduler.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          image: "{{ .Values.image.repo }}/{{ .Values.scheduler.name }}:{{ .Values.scheduler.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.scheduler.name }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: {{ .Values.scheduler.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.configProcessor.name }}
+  labels:
+      app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.configProcessor.replicas }}
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.configProcessor.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.configProcessor.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          image: "{{ .Values.image.repo }}/{{ .Values.configProcessor.name }}:{{ .Values.configProcessor.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.configProcessor.name }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: {{ .Values.configProcessor.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig

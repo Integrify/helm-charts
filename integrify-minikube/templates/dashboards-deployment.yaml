@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.dashboards.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.dashboards.replicas }}
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.dashboards.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.dashboards.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          image: "{{ .Values.image.repo}}/{{ .Values.dashboards.name}}:{{ .Values.dashboards.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.dashboards.name }}
+          ports:
+            - containerPort: {{ .Values.dashboards.port }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: {{ .Values.dashboards.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig

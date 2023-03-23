@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.forms.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.forms.replicas }}
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.forms.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.forms.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          image: "{{ .Values.image.repo }}/{{ .Values.forms.name }}:{{ .Values.forms.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.forms.name }}
+          ports:
+            - containerPort: {{ .Values.forms.port }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: {{ .Values.forms.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
