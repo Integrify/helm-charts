@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.auth.name }}
+  labels:
+      app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.auth.replicas }}
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.auth.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.auth.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers: 
+        - name: {{ .Values.auth.name }}
+          env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "{{ .Values.image.repo }}/{{ .Values.auth.name }}:{{ .Values.auth.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.auth.port }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: {{ .Values.auth.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.auth.name }}
+spec:
+  selector:
+    integrify.service: {{ .Values.auth.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.auth.port }}
+      targetPort: {{ .Values.auth.port }}
