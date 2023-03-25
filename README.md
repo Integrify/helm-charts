@@ -28,4 +28,4 @@ helm install -f <values.yaml> integrify <chart>
 - Helm (3.7+)
 
 ### Setting Up Kubernetes
-We currently provide charts for deployment to Minikube and Amazon Web Services Elastic Kubernetes Servive (EKS). READMEs for deployment on each chart can be found in their respective chart above. *Please note: Minikube is designed to be a environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube.*
+We currently provide charts for deployment to Minikube and Amazon Web Services Elastic Kubernetes Servive (EKS). READMEs for deployment on each chart can be found in their respective chart above. **_Please note: Minikube is designed to be a environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
