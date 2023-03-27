@@ -6,7 +6,7 @@ This repository will hold the helm charts to deploy Integrify. Currently we have
 
 ## TL;DR
 - You will need to download the [values.yaml](https://github.com/Integrify/helm-charts/blob/main/values.yaml) template available on this page and update it with your Integrify installation information prior to installing the application.
-- You need to contact [Integrify Support](https://support.integrify.com) to get AWS credentials to pull the Integrify images. If you have an AWS account you can use an IAM identity but you will still need to contact Integrify so we can provide you the proper IAM Role ARN to assume.
+- You will need to contact [Integrify Support](https://support.integrify.com) to get AWS credentials to pull the Integrify images. If you have an AWS account you can use an IAM identity within your account but you will still need to contact Integrify so we can provide you the proper IAM Role ARN to assume.
 
 To add the Integrify repo...
 ```
