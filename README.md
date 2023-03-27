@@ -1,12 +1,12 @@
 # Integrify Helm Charts Repository
 
-This repository will hold the helm charts to deploy Integrify. Currently we have separate charts for different environments but these will eventually be merged into one primary chart.
+This repository will hold the helm charts to deploy Integrify. Currently we have separate charts for different Kubernetes environments but these will eventually be merged into one primary chart.
 
 
 
 ## TL;DR
-- You will need to download the values.yaml template available on this page and update it with your Integrify installation information prior to installing the application.
-- You will also need to contact Integrify to get AWS credentials to pull the Integrify images. If you have an AWS account you can use an IAM identity but you will still need to contact Integrify so we can provide you the proper IAM Role ARN to assume.
+- You will need to download the [values.yaml](https://github.com/Integrify/helm-charts/blob/main/values.yaml) template available on this page and update it with your Integrify installation information prior to installing the application.
+- You need to contact [Integrify Support](https://support.integrify.com) to get AWS credentials to pull the Integrify images. If you have an AWS account you can use an IAM identity but you will still need to contact Integrify so we can provide you the proper IAM Role ARN to assume.
 
 To add the Integrify repo...
 ```
@@ -29,4 +29,4 @@ helm install -f <values.yaml> integrify <chart>
 - Helm (3.7+)
 
 ### Setting Up Kubernetes
-We currently provide charts for deployment to Minikube and Amazon Web Services Elastic Kubernetes Servive (EKS). READMEs for deployment on each chart can be found in their respective chart above. **_Please note: Minikube is designed to be a environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
+We currently provide charts for deployment to Minikube and Amazon Web Services Elastic Kubernetes Servive (EKS). READMEs for deployment on each chart can be found in their respective chart above. **_Please note: Minikube is designed to be an environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
