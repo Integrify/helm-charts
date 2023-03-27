@@ -4,12 +4,15 @@
 # secrets: awsCreds
 # secrets: integrifyEnvToken
 # secrets: redisConn
+# secrets: recapthchaSecurityKey
 # config: consumersConn
 # config: mongo: connectionString
 # config: jwtSecret - you can reference the following to create a unique secret - https://guidgenerator.com/online-guid-generator.aspx
 
+# This template assumes you are running mssql, mongo, and redis locally in Docker and uses the hostname host.minikube.internal for all connections. If you are running these services externally you will need to update these values.
+
 # Application Parameters
-appName: your-app-name
+appName: integrify-minikube
 
 host:
   name: integrify.demo
@@ -24,13 +27,14 @@ globalEnv:
     value: kubernetes
 
 secrets:
-  awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"}
-  integrifyEnvToken: YOUR_ENV_TOKEN
-  redisConn: {"host":"REDIS_SERVER_NAME", "port": 6379}
+  awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
+  integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
+  redisConn: {"host":"host.minikube.internal", "port": 6379} # Change host to your Redis server
+  recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
   
 config:
   portalUrl: "http://integrify.demo"
-  consumersConn: data source=DATABASE_SERVER_NAME;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
+  consumersConn: data source=host.minikube.internal;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
   logger:
     activeConfig: debug
     rootPath: ./logs
@@ -72,7 +76,7 @@ config:
       console:
         disabled: false
   mongo:
-    connectionString: "mongodb://MONGO_SERVER_NAME:27017"
+    connectionString: "mongodb://host.minikube.internal:27017" # Change host to your mongo server
     options:
       useUnifiedTopology: true
       useNewUrlParser: true
@@ -90,7 +94,7 @@ config:
     querygen_trace: "false"
     debug_logs: "off"
     TimeZoneIndex: "20"
-  jwtSecret: "YOUR_JWT_SECRET"
+  jwtSecret: "12345678-1234-1234-1234-123456789ABC" # Example key. You should update with your own secret
   expiresInUnit: days
   expiresInAmount: 5
 
