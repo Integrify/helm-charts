@@ -9,6 +9,8 @@
   - Helm (3.7+)
   - An AWS Account with an IAM user that has permissions to assume a role provided by Integrify which will allow you to pull the deployment images
 
+**_Please note: Minikube is designed to be an environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
+
 
 ### Install
 **1. Setup Minikube And Environment**
