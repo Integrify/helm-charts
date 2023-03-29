@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.client.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.client.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.client.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          - configMapRef:
+              name: env
+          image: "{{ .Values.imageRepo }}/{{ .Values.client.name }}:{{ .Values.client.tag }}"
+          name: {{ .Values.client.name }}
+          ports:
+            - containerPort: {{ .Values.client.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.client.resources.requests.cpu }}
+              memory: {{ .Values.client.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.client.resources.limits.memory }}
+              memory: {{ .Values.client.resources.limits.memory }}
+      restartPolicy: {{ .Values.client.restart }}
+status: {}

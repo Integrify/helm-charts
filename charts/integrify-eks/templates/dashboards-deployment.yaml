@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.dashboards.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.dashboards.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.dashboards.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "{{ .Values.imageRepo}}/{{ .Values.dashboards.name}}:{{ .Values.dashboards.tag }}"
+          name: {{ .Values.dashboards.name }}
+          ports:
+            - containerPort: {{ .Values.dashboards.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.dashboards.resources.requests.cpu }}
+              memory: {{ .Values.dashboards.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.dashboards.resources.limits.memory }}
+              memory: {{ .Values.dashboards.resources.limits.memory }}
+      restartPolicy: {{ .Values.dashboards.restart }}
+status: {}

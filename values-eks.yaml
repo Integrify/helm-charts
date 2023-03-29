@@ -1,0 +1,331 @@
+# This values-eks.yaml file will allow you to customize the Integrify installation to your specific needs.
+# You will need to update the following parameters at a minimum...
+# frontend: host: name
+
+appName: integrify-eks
+imageRepo: 940767003169.dkr.ecr.us-east-1.amazonaws.com
+#front end info
+frontend:
+  host:
+    name: integrify.yourdomain.demo
+# Services information
+auth:
+  name: api-auth
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3502
+  restart: Always
+  healthcheck: /api/auth/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+client:
+  name: client
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3508
+  restart: Always
+  healthcheck: /healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+configProcessor:
+  name: config-processor
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  restart: Always
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+coreService:
+  name: core-service
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 5000
+  restart: Always
+  healthcheck: /healthcheck
+  resources:
+    requests:
+      cpu: "1"
+      memory: "2Gi"
+    limits:
+      cpu: "1"
+      memory: "4Gi"
+
+dashboards:
+  name: api-dashboards
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3522
+  restart: Always
+  healthcheck: /api/dashboards/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+files:
+  name: api-files
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3509
+  volMountPath: /usr/src/app/files
+  restart: Always
+  volSize: 250M
+  hostPath: /data/files
+  access: ReadWriteOnce
+  healthcheck: /api/files/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+forms:
+  name: api-forms
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3524
+  restart: Always
+  healthcheck: /api/forms/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+instance:
+  name: api-instance
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3518
+  restart: Always
+  healthcheck: /api/instance/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+integrations:
+  name: api-integrations
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3526
+  restart: Always
+  healthcheck: /api/integrations/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+processes:
+  name: api-processes
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3525
+  restart: Always
+  healthcheck: /api/processes/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+reports:
+  name: api-reports
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3523
+  restart: Always
+  healthcheck: /api/reports/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+scheduler:
+  name: scheduler
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3504
+  restart: Always
+  healthcheck: /api/scheduler/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+sessionProcessor:
+  name: session-processor
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  restart: Always
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+settings:
+  name: api-settings
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3503
+  restart: Always
+  healthcheck: /api/settings/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+ssp:
+  name: single-spa-portal
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3000
+  restart: Always
+  healthcheck: /
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+taskDispatcher:
+  name: api-task-dispatcher
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3519
+  restart: Always
+  healthcheck: /api/task-dispatcher/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+taskProcessor:
+  name: core-service-tp
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  restart: Always
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+tenant:
+  name: api-tenant
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3505
+  restart: Always
+  healthcheck: /api/tenant/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+user:
+  name: api-user
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  tag: Prod
+  port: 3521
+  restart: Always
+  healthcheck: /api/user/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"

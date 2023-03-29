@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.sessionProcessor.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.sessionProcessor.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.sessionProcessor.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          - configMapRef:
+              name: env
+          image: "{{ .Values.imageRepo }}/{{ .Values.sessionProcessor.name}}:{{ .Values.sessionProcessor.tag }}"
+          name: {{ .Values.sessionProcessor.name }}
+          resources:
+            requests:
+              cpu: {{ .Values.sessionProcessor.resources.requests.cpu }}
+              memory: {{ .Values.sessionProcessor.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.sessionProcessor.resources.limits.memory }}
+              memory: {{ .Values.sessionProcessor.resources.limits.memory }}
+      restartPolicy: {{ .Values.sessionProcessor.restart }}
+status: {}

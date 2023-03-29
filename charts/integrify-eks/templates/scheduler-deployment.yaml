@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.scheduler.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.scheduler.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.scheduler.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          - configMapRef:
+              name: env
+          image: "{{ .Values.imageRepo }}/{{ .Values.scheduler.name }}:{{ .Values.scheduler.tag }}"
+          name: {{ .Values.scheduler.name }}
+          resources:
+            requests:
+              cpu: {{ .Values.scheduler.resources.requests.cpu }}
+              memory: {{ .Values.scheduler.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.scheduler.resources.limits.memory }}
+              memory: {{ .Values.scheduler.resources.limits.memory }}
+      restartPolicy: {{ .Values.scheduler.restart }}
+status: {}

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.taskProcessor.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.taskProcessor.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.taskProcessor.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          - configMapRef:
+              name: env
+          image: "{{ .Values.imageRepo }}/{{ .Values.taskProcessor.name }}:{{ .Values.taskProcessor.tag }}"
+          name: {{ .Values.taskProcessor.name }}
+          resources:
+            requests:
+              cpu: {{ .Values.taskProcessor.resources.requests.cpu }}
+              memory: {{ .Values.taskProcessor.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.taskProcessor.resources.limits.memory }}
+              memory: {{ .Values.taskProcessor.resources.limits.memory }}
+      restartPolicy: {{ .Values.taskProcessor.restart }}
+status: {}
