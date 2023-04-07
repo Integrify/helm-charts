@@ -141,7 +141,7 @@ helm repo add integrify https://integrify.github.io/helm-charts
 
 - Deploy release called integrify via helm. Make sure the `-f` flag is pointing to your values.yml file
 ```
-helm install -f values.yaml integrify integrify/integrify-minikube
+helm install -f values.yaml integrify integrify/integrify-eks
 ```
 
 **11. Update DNS with load balancer DNS Name**
