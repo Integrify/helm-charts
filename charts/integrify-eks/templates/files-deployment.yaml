@@ -17,12 +17,13 @@ spec:
         app: {{ .Values.appName }}
     spec:
       containers:
-        - envFrom:
+        - env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          envFrom:
           - secretRef:
               name: integrify-secrets
-          - configMapRef:
-              name: env
           image: "{{ .Values.imageRepo }}/{{ .Values.files.name }}:{{ .Values.files.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.files.name }}
           ports:
             - containerPort: {{ .Values.files.port }}

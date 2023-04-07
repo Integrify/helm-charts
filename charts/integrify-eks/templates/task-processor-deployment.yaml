@@ -16,12 +16,13 @@ spec:
         app: {{ .Values.appName }}
     spec:
       containers:
-        - envFrom:
+        - env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          envFrom:
           - secretRef:
               name: integrify-secrets
-          - configMapRef:
-              name: env
           image: "{{ .Values.imageRepo }}/{{ .Values.taskProcessor.name }}:{{ .Values.taskProcessor.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.taskProcessor.name }}
           resources:
             requests:

@@ -2,16 +2,29 @@
 # You will need to update the following parameters at a minimum...
 # frontend: host: name
 
+# Application Parameters
 appName: integrify-eks
-imageRepo: 940767003169.dkr.ecr.us-east-1.amazonaws.com
-#front end info
-frontend:
-  host:
-    name: integrify.yourdomain.demo
+
+host:
+  name: integrify.yourdomain.demo
+
+globalEnv:
+  - name: PORTAL_URL
+    value: "http://integrify.demo"
+  - name: CONSOLE_LOG_FORMAT
+    value: text
+  - name:  ENV_PLATFORM
+    value: kubernetes
+
+secrets:
+  awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
+  integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
+  redisConn: {"host":"redis.yourdomain.demo", "port": 6379} # Change host to your Redis server
+  recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
 
 config:
   portalUrl: "http://integrify.demo"
-  consumersConn: data source=host.minikube.internal;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
+  consumersConn: data source=sql.yourdomain.demo;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
   logger:
     activeConfig: debug
     rootPath: ./logs
@@ -53,7 +66,7 @@ config:
       console:
         disabled: false
   mongo:
-    connectionString: "mongodb://host.minikube.internal:27017" # Change host to your mongo server
+    connectionString: "mongodb://mongo.yourdomain.demo:27017" # Change host to your mongo server
     options:
       useUnifiedTopology: true
       useNewUrlParser: true
@@ -74,6 +87,13 @@ config:
   jwtSecret: "12345678-1234-1234-1234-123456789ABC" # Example key. You should update with your own secret
   expiresInUnit: days
   expiresInAmount: 5
+
+# Image Parameters
+image:
+  repo: 940767003169.dkr.ecr.us-east-1.amazonaws.com
+  pullPolicy: Always
+  # Pull policy options are IfNotPresent, Always, Never. 
+  # Image pull information can be found here - https://kubernetes.io/docs/concepts/containers/images/
 
 # Services information
 auth:
