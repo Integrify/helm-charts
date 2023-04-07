@@ -2,23 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: integrify-eks-ingress
+  {{- with .Values.ingress.annotations }}
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    # Health Check Settings
-    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
-    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-    #alb.ingress.kubernetes.io/healthcheck-path: /healthcheck
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
-    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
-    alb.ingress.kubernetes.io/success-codes: '200'
-    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
-    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
-    #HTTPS/Certificate settings
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:564858915116:certificate/2cd99a4a-2a74-4445-8ea1-1f5bec587c2c
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   rules:
     - http:
