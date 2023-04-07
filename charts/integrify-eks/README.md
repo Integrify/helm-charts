@@ -128,21 +128,20 @@ aws iam attach-role-policy \
 --role-name {amazon-fargate-eks-pod-execution-role}
 ```
 
-**10. Update the Integrify Cloud configmap and secrets file with installation specific information**
+**10. Install Integrify**
 
-**11. Create the secrets and configmap in your custom namespace**
-```
-kubectl create secrets generic integrify-secrets \
---from-env-file secrets.env -n my-namespace
-```
+- Download the default [values-eks.yaml](https://github.com/Integrify/helm-charts/blob/main/values-eks.yaml) template file from the Integrify Helm Charts GitHub page.
 
-```
-kubectl apply -n my-namespace -f configmap.yaml
-```
+- Update the downloaded values-eks.yaml template file with your Integrify installation details and rename to values.yaml
 
-**12. CD into helm-eks directory and deploy application via Helm**
+- Add the Integrify Helm repo
 ```
-helm install -n integrify integrify-cloud .
+helm repo add integrify https://integrify.github.io/helm-charts
 ```
 
-**13. Update DNS with load balancer DNS Name**
+- Deploy release called integrify via helm. Make sure the `-f` flag is pointing to your values.yml file
+```
+helm install -f values.yaml integrify integrify/integrify-minikube
+```
+
+**11. Update DNS with load balancer DNS Name**
