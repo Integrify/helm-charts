@@ -18,6 +18,7 @@ spec:
       containers:
         - env:
           {{- toYaml .Values.globalEnv | nindent 10 }}
+          {{- toYaml .Values.coreService.env | nindent 10 }}
           envFrom:
           - secretRef:
               name: integrify-secrets
