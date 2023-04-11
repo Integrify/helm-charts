@@ -35,5 +35,12 @@ spec:
             limits:
               cpu: {{ .Values.files.resources.limits.memory }}
               memory: {{ .Values.files.resources.limits.memory }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
       restartPolicy: {{ .Values.files.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
 status: {}
