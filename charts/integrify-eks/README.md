@@ -1,4 +1,8 @@
-# Setup New Integrify Cloud Cluster
+# Integrify-EKS
+This README is an example walk-through of how Integrify creates a Kubernetes cluster in AWS EKS using eksctl and deploys the Integrify application using helm. This walk-through is to be used as an example only and you may need to change details for your cluster installation. **Deployment and support of Kubernetes is outside the scope of Integrify support.** 
+
+# Setup An AWS EKS Cluster
+For information and documentation on creating an AWS EKS cluster see Amazon's getting started guide - https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
 
 **1. Deploy a new cluster using eksctl updating the name, region, vpc-cidr, AZs, and version as needed**
 ```
