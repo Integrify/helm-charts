@@ -8,6 +8,8 @@ This repository will hold the helm charts to deploy Integrify. Currently we have
 - You will need to download the proper environment (minikube or EKS) values.yaml template available from this page and update it with your Integrify installation information prior to installing the application.
 - You will need to contact [Integrify Support](https://support.integrify.com) to get AWS credentials to pull the Integrify images. If you have an AWS account you can use an IAM identity within your account but you will still need to contact Integrify so we can provide you the proper IAM Role ARN to assume.
 
+## Quick Setup
+
 To add the Integrify repo...
 ```
 helm repo add integrify https://integrify.github.io/helm-charts

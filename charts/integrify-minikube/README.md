@@ -68,7 +68,7 @@ minikube addons configure registry-creds
 
 **2. Install Integrify**
 
-- Download the default values.yaml template file from the Integrify Helm Charts GitHub page - https://github.com/Integrify/helm-charts/blob/main/values.yaml - and save it in the directory you created in step 1
+- Download the default [values.yaml](https://github.com/Integrify/helm-charts/blob/main/values-minikube.yaml) template file for Minikube from the Integrify Helm Charts GitHub page and save it in the directory you created in step 1
 
 - Update the downloaded values.yaml template file with your Integrify installation details
 
