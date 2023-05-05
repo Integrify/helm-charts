@@ -26,7 +26,7 @@ You can and will need to deploy Kubernetes based upon your company's best practi
 ## General Prerequisites
 
 - Microsoft SQL Server (2016+)
-  - We recommend two separate databases. A consumers database which will hold application and instance configuration data and a data specific database for each instance you install.
+  - We recommend two separate databases. A consumers database which will hold application and instance configuration data and a data specific database.
 - Mongo (3.4+)
 - Redis
 - Kubernetes (1.23+)
