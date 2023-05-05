@@ -2,14 +2,18 @@
 
 ### Prerequisites
   - MSSQL Server (2016+)
+    - We recommend two separate databases. A consumers database which will hold application and instance configuration data and a data specific database.
+    - Integrify database schema scripts can be obtained by opening a support request via [Integrify Support](https://support.integrify.com).
   - Mongo (3.4+)
   - Redis
   - Minikube
     - **NOTE** If you plan on running Minikube on Docker, it should be run natively on docker engine on Linux. You may be able to get this working on Docker Desktop using the `minikube proxy` command after application installation to open the ingress to your local host machine but that has not yet been tested. This is due to Docker Desktop running all containers in it's own small linux container.
+    - **_Please note: Minikube is designed to be an environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
   - Helm (3.7+)
   - An AWS Account with an IAM user that has permissions to assume a role provided by Integrify which will allow you to pull the deployment images
+    - This can be obtained by opening a support request via [Integrify Support](https://support.integrify.com).
 
-**_Please note: Minikube is designed to be an environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
+
 
 
 ### Install
