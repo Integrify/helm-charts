@@ -26,7 +26,7 @@ cd integrify-demo && mkdir files
 
 - Start Minikube mounting the files directory.
 ```
-minikube start --mount --mount-string="$PWD/files:/integrify/files" --driver=docker
+minikube start --mount --mount-string="$PWD/files:/host/files" --driver=docker
 ```
 
 - Get the ip address of your minikube container
