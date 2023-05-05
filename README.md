@@ -7,9 +7,9 @@ Deployment READMEs for each environment can be found in their respective chart i
 
 These charts are a basic starting point for deployment. You may need to modify aspects of the deployment for your environment.
 
-**_Please note: Minikube is designed to be an environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
-
 We will add more charts as they become available.
+
+**_Please note: Minikube is designed to be an environment for testing Kubernetes applications including Integrify. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
 
 ## Setting Up Kubernetes
 We do not provide support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation. 
