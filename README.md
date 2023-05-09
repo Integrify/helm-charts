@@ -1,7 +1,7 @@
 # Integrify Helm Charts Repository
 
 ## Summary
-This repository holds the helm charts which can be used to deploy Integrify into a Kubernetes cluster. Currently, we provide base charts to deploy to [Minikube](https://minikube.sigs.k8s.io/docs/) and [Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html) clusters. 
+This repository holds the helm charts for deploying Integrify into a Kubernetes cluster. Currently, we provide base charts to deploy to [Minikube](https://minikube.sigs.k8s.io/docs/) and [Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html) clusters. 
 
 Deployment READMEs for each environment can be found in their respective chart in the charts directory above. 
 
