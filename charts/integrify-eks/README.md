@@ -132,7 +132,18 @@ aws iam attach-role-policy \
 --role-name {amazon-fargate-eks-pod-execution-role}
 ```
 
-**10. Install Integrify**
+**10. Create and setup Integrify databases**
+
+  - ***You will need to contact [Integrify Support](https://support.integrify.com) and request the database schema scripts***
+  - We recommend creating two databases for Integrify. A consumers database which will contain data about the Integrify installation and a data database which will be used to store all of the actual application data. There is no requirement for the database names, though we recommend naming them so you'll remember they are being used by Integrify. 
+  - Create or add a user to the databases created above. Grant the user db_owner rights.
+  - Run the scripts provided by Integrify Support to create the inital schemas
+    - Run the *integrifyConsumers_FreshInstall_xx.xxxxx-U.sql* script against the consumers database to create the initial consumers schema
+    - Run the *integrify_FreshInstall_xx.xxxxx-U.sql* script against the data database to create the initial data schema
+    - *If you are only using one database, run both scripts against that one database*
+  - Update the variables in the *integrifyConsumers_CreateTenant_xx.xxxxx.sql* file for your environment and then run that against the consumers database to add a new instance.
+
+**11. Install Integrify**
 
 - Download the default [values-eks.yaml](https://github.com/Integrify/helm-charts/blob/main/values-eks.yaml) template file from the Integrify Helm Charts GitHub page.
 
@@ -148,4 +159,4 @@ helm repo add integrify https://integrify.github.io/helm-charts
 helm install -f values.yaml integrify integrify/integrify-eks
 ```
 
-**11. Update DNS with load balancer DNS Name**
+**12. Update DNS with load balancer DNS Name**
