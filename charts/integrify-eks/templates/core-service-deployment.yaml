@@ -32,7 +32,7 @@ spec:
               cpu: {{ .Values.coreService.resources.requests.cpu }}
               memory: {{ .Values.coreService.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.coreService.resources.limits.memory }}
+              cpu: {{ .Values.coreService.resources.limits.cpu }}
               memory: {{ .Values.coreService.resources.limits.memory }}
           volumeMounts:
           - name: config-volume

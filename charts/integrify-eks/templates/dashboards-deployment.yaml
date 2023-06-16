@@ -31,7 +31,7 @@ spec:
               cpu: {{ .Values.dashboards.resources.requests.cpu }}
               memory: {{ .Values.dashboards.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.dashboards.resources.limits.memory }}
+              cpu: {{ .Values.dashboards.resources.limits.cpu }}
               memory: {{ .Values.dashboards.resources.limits.memory }}
           volumeMounts:
           - name: config-volume

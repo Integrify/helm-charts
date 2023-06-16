@@ -29,7 +29,7 @@ spec:
               cpu: {{ .Values.configProcessor.resources.requests.cpu }}
               memory: {{ .Values.configProcessor.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.configProcessor.resources.limits.memory }}
+              cpu: {{ .Values.configProcessor.resources.limits.cpu }}
               memory: {{ .Values.configProcessor.resources.limits.memory }}
           volumeMounts:
           - name: config-volume
