@@ -244,9 +244,9 @@ ssp:
   port: 3000
   restart: Always
 
-taskDispatcher:
+taskispatcher:
   repoName: api-task-dispatcher
-  name: taskDipatcher
+  name: task-dipatcher
   replicas: 1
   tag: Prod
   port: 3555

@@ -397,7 +397,7 @@ ssp:
 
 taskDispatcher:
   repoName: api-task-dispatcher
-  name: taskDipatcher
+  name: task-dispatcher
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
