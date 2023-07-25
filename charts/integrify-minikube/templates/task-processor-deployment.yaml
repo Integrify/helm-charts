@@ -22,7 +22,7 @@ spec:
               name: integrify-secrets
           env:
           {{- toYaml .Values.globalEnv | nindent 10 }}
-          image: "{{ .Values.image.repo }}/{{ .Values.taskProcessor.name }}:{{ .Values.taskProcessor.tag }}"
+          image: "{{ .Values.image.repo }}/{{ .Values.taskProcessor.repoName }}:{{ .Values.taskProcessor.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.taskProcessor.name }}
           volumeMounts:

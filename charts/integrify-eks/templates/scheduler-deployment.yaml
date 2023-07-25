@@ -21,7 +21,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo }}/{{ .Values.scheduler.name }}:{{ .Values.scheduler.tag }}"
+          image: "{{ .Values.image.repo }}/{{ .Values.scheduler.repoName }}:{{ .Values.scheduler.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.scheduler.name }}
           resources:

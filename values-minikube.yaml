@@ -25,6 +25,8 @@ globalEnv:
     value: text
   - name:  ENV_PLATFORM
     value: kubernetes
+  - name: PORT
+    value: "3555"
 
 secrets:
   awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
@@ -86,9 +88,9 @@ config:
   client:
     endpointSecurityChecks: true
     max_sockets: 5000
-    port: 3508
+    #port: 3508
     requestDetailCacheMinutes: 30
-    core_service_root: "http://integrify.demo/core-service"
+    #core_service_root: "http://integrify.demo/core-service"
   service:
     task_processor_interval: 1
     querygen_trace: "false"
@@ -112,49 +114,58 @@ ingress:
 
 # Services Parameters
 auth:
-  name: api-auth
+  repoName: api-auth
+  name: auth
   replicas: 1
   tag: Prod
-  port: 3502
+  port: 3555
   restart: Always
 
 client:
+  repoName: client
   name: client
   replicas: 1
   tag: Prod
-  port: 3508
+  port: 3555
   restart: Always
 
 configProcessor:
+  repoName: config-processor
   name: config-processor
   replicas: 1
   tag: Prod
   restart: Always
 
 coreService:
+  repoName: core-service
   name: core-service
   replicas: 1
   tag: Prod
-  port: 5000
+  port: 3555
   restart: Always
   env:
   - name: MIN_THREADS
     value: "150"
   - name: REQUEST_LOGGING
     value: "off"
+  - name: ASPNETCORE_URLS
+    value: "http://*:3555"
+
 
 dashboards:
-  name: api-dashboards
+  repoName: api-dashboards
+  name: dashboards
   replicas: 1
   tag: Prod
-  port: 3522
+  port: 3555
   restart: Always
 
 files:
-  name: api-files
+  repoName: api-files
+  name: files
   replicas: 1
   tag: Prod
-  port: 3509
+  port: 3555
   restart: Always
   volSize: 250M
   access: ReadWriteOnce
@@ -163,90 +174,103 @@ files:
     value: '/integrify/files'
 
 forms:
-  name: api-forms
+  repoName: api-forms
+  name: forms
   replicas: 1
   tag: Prod
-  port: 3524
+  port: 3555
   restart: Always
 
 instance:
-  name: api-instance
+  repoName: api-instance
+  name: instance
   replicas: 1
   tag: Prod
-  port: 3518
+  port: 3555
   restart: Always
 
 integrations:
-  name: api-integrations
+  repoName: api-integrations
+  name: integrations
   replicas: 1
   tag: Prod
-  port: 3526
+  port: 3555
   restart: Always
 
 processes:
-  name: api-processes
+  repoName: api-processes
+  name: processes
   replicas: 1
   tag: Prod
-  port: 3525
+  port: 3555
   restart: Always
 
 reports:
-  name: api-reports
+  repoName: api-reports
+  name: reports
   replicas: 1
   tag: Prod
-  port: 3523
+  port: 3555
   restart: Always
 
 scheduler:
+  repoName: scheduler
   name: scheduler
   replicas: 1
   tag: Prod
-  port: 3504
+  port: 3555
   restart: Always
 
 sessionProcessor:
+  repoName: session-processor
   name: session-processor
   replicas: 1
   tag: Prod
   restart: Always
 
 settings:
-  name: api-settings
+  repoName: api-settings
+  name: settings
   replicas: 1
   tag: Prod
-  port: 3503
+  port: 3555
   restart: Always
 
 ssp:
-  name: single-spa-portal
+  repoName: single-spa-portal
+  name: ports
   replicas: 1
   tag: Prod
   port: 3000
   restart: Always
 
 taskDispatcher:
-  name: api-task-dispatcher
+  repoName: api-task-dispatcher
+  name: taskDipatcher
   replicas: 1
   tag: Prod
-  port: 3519
+  port: 3555
   restart: Always
 
 taskProcessor:
-  name: core-service-tp
+  repoName: core-service-tp
+  name: task-processor
   replicas: 1
   tag: Prod
   restart: Always
 
 tenant:
-  name: api-tenant
+  repoName: api-tenant
+  name: tenant
   replicas: 1
   tag: Prod
-  port: 3505
+  port: 3555
   restart: Always
 
 user:
-  name: api-user
+  repoName: api-user
+  name: user
   replicas: 1
   tag: Prod
-  port: 3521
+  port: 3555
   restart: Always
