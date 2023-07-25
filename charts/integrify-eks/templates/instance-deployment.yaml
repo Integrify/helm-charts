@@ -21,7 +21,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo}}/{{ .Values.instance.repoName }}:{{ .Values.instance.tag }}"
+          image: "{{ .Values.image.repo}}/{{ .Values.instance.name }}:{{ .Values.instance.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.instance.name }}
           ports:
