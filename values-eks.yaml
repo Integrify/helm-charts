@@ -15,9 +15,7 @@ globalEnv:
     value: text
   - name:  ENV_PLATFORM
     value: kubernetes
-  - name: PORT
-    value: "3555"
-  
+
 secrets:
   awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
   integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
@@ -78,9 +76,9 @@ config:
   client:
     endpointSecurityChecks: true
     max_sockets: 5000
-    #port: 3508
+    port: 3508
     requestDetailCacheMinutes: 30
-    #core_service_root: "http://integrify.demo/core-service"
+    core_service_root: "http://integrify.demo/core-service"
   service:
     task_processor_interval: 1
     querygen_trace: "false"
@@ -117,13 +115,14 @@ ingress:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
 
-# Services Parameters
+# Services information
 auth:
-  repoName: api-auth
-  name: auth
-  replicas: 1
+  name: api-auth
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3502
   restart: Always
   healthcheck: /api/auth/healthcheck
   resources:
@@ -135,13 +134,12 @@ auth:
       memory: "1Gi"
 
 client:
-  repoName: client
   name: client
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3508
   restart: Always
   healthcheck: /healthcheck
   resources:
@@ -153,7 +151,6 @@ client:
       memory: "1Gi"
 
 configProcessor:
-  repoName: config-processor
   name: config-processor
   minReplicas: 1
   maxReplicas: 3
@@ -169,13 +166,12 @@ configProcessor:
       memory: "1Gi"
 
 coreService:
-  repoName: core-service
   name: core-service
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 5000
   restart: Always
   healthcheck: /healthcheck
   env:
@@ -183,8 +179,6 @@ coreService:
     value: "150"
   - name: REQUEST_LOGGING
     value: "off"
-  - name: ASPNETCORE_URLS
-    value: "http://*:3555"
   resources:
     requests:
       cpu: "1"
@@ -194,8 +188,7 @@ coreService:
       memory: "4Gi"
 
 dashboards:
-  repoName: api-dashboards
-  name: dashboards
+  name: api-dashboards
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
@@ -212,13 +205,13 @@ dashboards:
       memory: "1Gi"
 
 files:
-  repoName: api-files
-  name: files
+  name: api-files
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3509
+  volMountPath: /usr/src/app/files
   restart: Always
   volSize: 250M
   hostPath: /data/files
@@ -236,13 +229,12 @@ files:
       memory: "1Gi"
 
 forms:
-  repoName: api-forms
-  name: forms
+  name: api-forms
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3524
   restart: Always
   healthcheck: /api/forms/healthcheck
   resources:
@@ -254,13 +246,12 @@ forms:
       memory: "1Gi"
 
 instance:
-  repoName: api-instance
-  name: instance
+  name: api-instance
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3518
   restart: Always
   healthcheck: /api/instance/healthcheck
   resources:
@@ -272,13 +263,12 @@ instance:
       memory: "1Gi"
 
 integrations:
-  repoName: api-integrations
-  name: integrations
+  name: api-integrations
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3526
   restart: Always
   healthcheck: /api/integrations/healthcheck
   resources:
@@ -290,13 +280,12 @@ integrations:
       memory: "1Gi"
 
 processes:
-  repoName: api-processes
-  name: processes
+  name: api-processes
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3525
   restart: Always
   healthcheck: /api/processes/healthcheck
   resources:
@@ -308,13 +297,12 @@ processes:
       memory: "1Gi"
 
 reports:
-  repoName: api-reports
-  name: reports
+  name: api-reports
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3523
   restart: Always
   healthcheck: /api/reports/healthcheck
   resources:
@@ -326,13 +314,12 @@ reports:
       memory: "1Gi"
 
 scheduler:
-  repoName: scheduler
   name: scheduler
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3504
   restart: Always
   healthcheck: /api/scheduler/healthcheck
   resources:
@@ -344,7 +331,6 @@ scheduler:
       memory: "1Gi"
 
 sessionProcessor:
-  repoName: session-processor
   name: session-processor
   minReplicas: 1
   maxReplicas: 3
@@ -360,13 +346,12 @@ sessionProcessor:
       memory: "1Gi"
 
 settings:
-  repoName: api-settings
-  name: settings
+  name: api-settings
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3503
   restart: Always
   healthcheck: /api/settings/healthcheck
   resources:
@@ -378,8 +363,7 @@ settings:
       memory: "1Gi"
 
 ssp:
-  repoName: single-spa-portal
-  name: portal
+  name: single-spa-portal
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
@@ -396,13 +380,12 @@ ssp:
       memory: "1Gi"
 
 taskDispatcher:
-  repoName: api-task-dispatcher
-  name: task-dispatcher
+  name: api-task-dispatcher
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3519
   restart: Always
   healthcheck: /api/task-dispatcher/healthcheck
   resources:
@@ -414,8 +397,7 @@ taskDispatcher:
       memory: "1Gi"
 
 taskProcessor:
-  repoName: core-service-tp
-  name: task-processor
+  name: core-service-tp
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
@@ -430,13 +412,12 @@ taskProcessor:
       memory: "1Gi"
 
 tenant:
-  repoName: api-tenant
-  name: tenant
+  name: api-tenant
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3505
   restart: Always
   healthcheck: /api/tenant/healthcheck
   resources:
@@ -448,13 +429,12 @@ tenant:
       memory: "1Gi"
 
 user:
-  repoName: api-user
-  name: user
+  name: api-user
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
   tag: Prod
-  port: 3555
+  port: 3521
   restart: Always
   healthcheck: /api/user/healthcheck
   resources:
