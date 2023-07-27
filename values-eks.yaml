@@ -136,7 +136,7 @@ auth:
 
 client:
   repoName: client
-  name: client
+  name: workflow
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
