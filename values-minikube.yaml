@@ -238,13 +238,13 @@ settings:
 
 ssp:
   repoName: single-spa-portal
-  name: ports
+  name: portal
   replicas: 1
   tag: Prod
   port: 3000
   restart: Always
 
-taskispatcher:
+taskDispatcher:
   repoName: api-task-dispatcher
   name: task-dipatcher
   replicas: 1
