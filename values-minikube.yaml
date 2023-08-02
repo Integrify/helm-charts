@@ -123,7 +123,7 @@ auth:
 
 client:
   repoName: client
-  name: client
+  name: workflow
   replicas: 1
   tag: Prod
   port: 3555
