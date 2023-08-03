@@ -21,7 +21,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo }}/{{ .Values.taskProcessor.name }}:{{ .Values.taskProcessor.tag }}"
+          image: "{{ .Values.image.repo }}/{{ .Values.taskProcessor.repoName }}:{{ .Values.taskProcessor.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.taskProcessor.name }}
           resources:
