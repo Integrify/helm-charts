@@ -156,7 +156,7 @@ spec:
               service:
                 name: scheduler
                 port:
-                  number: 3504
+                  number: {{ .Values.scheduler.port }}
           - path: /api/settings
             pathType: Prefix
             backend:

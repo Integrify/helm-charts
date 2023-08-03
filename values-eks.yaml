@@ -134,7 +134,8 @@ auth:
       memory: "1Gi"
 
 client:
-  name: client
+  repoName: client
+  name: workflow
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
