@@ -117,7 +117,6 @@ auth:
   repoName: api-auth
   name: auth
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -125,7 +124,6 @@ client:
   repoName: client
   name: workflow
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -133,14 +131,12 @@ configProcessor:
   repoName: config-processor
   name: config-processor
   replicas: 1
-  tag: Prod
   restart: Always
 
 coreService:
   repoName: core-service
   name: core-service
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
   env:
@@ -156,7 +152,6 @@ dashboards:
   repoName: api-dashboards
   name: dashboards
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -164,7 +159,6 @@ files:
   repoName: api-files
   name: files
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
   volSize: 250M
@@ -177,7 +171,6 @@ forms:
   repoName: api-forms
   name: forms
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -185,7 +178,6 @@ instance:
   repoName: api-instance
   name: instance
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -193,7 +185,6 @@ integrations:
   repoName: api-integrations
   name: integrations
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -201,7 +192,6 @@ processes:
   repoName: api-processes
   name: processes
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -209,7 +199,6 @@ reports:
   repoName: api-reports
   name: reports
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -217,7 +206,6 @@ scheduler:
   repoName: scheduler
   name: scheduler
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -225,14 +213,12 @@ sessionProcessor:
   repoName: session-processor
   name: session-processor
   replicas: 1
-  tag: Prod
   restart: Always
 
 settings:
   repoName: api-settings
   name: settings
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -240,7 +226,6 @@ ssp:
   repoName: single-spa-portal
   name: portal
   replicas: 1
-  tag: Prod
   port: 3000
   restart: Always
 
@@ -248,7 +233,6 @@ taskDispatcher:
   repoName: api-task-dispatcher
   name: task-dipatcher
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -256,14 +240,12 @@ taskProcessor:
   repoName: core-service-tp
   name: task-processor
   replicas: 1
-  tag: Prod
   restart: Always
 
 tenant:
   repoName: api-tenant
   name: tenant
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
 
@@ -271,6 +253,5 @@ user:
   repoName: api-user
   name: user
   replicas: 1
-  tag: Prod
   port: 3555
   restart: Always
