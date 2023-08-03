@@ -22,7 +22,7 @@ spec:
               name: integrify-secrets
           env:
           {{- toYaml .Values.globalEnv | nindent 10 }}
-          image: "{{ .Values.image.repo}}/{{ .Values.integrations.repoName }}:{{ .Values.integrations.tag }}"
+          image: "{{ .Values.image.repo}}/{{ .Values.integrations.repoName }}:58e3387"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.integrations.name }}
           ports:
