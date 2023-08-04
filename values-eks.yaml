@@ -121,7 +121,6 @@ auth:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3502
   restart: Always
   healthcheck: /api/auth/healthcheck
@@ -139,7 +138,6 @@ client:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3508
   restart: Always
   healthcheck: /healthcheck
@@ -156,7 +154,6 @@ configProcessor:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   restart: Always
   resources:
     requests:
@@ -171,7 +168,6 @@ coreService:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 5000
   restart: Always
   healthcheck: /healthcheck
@@ -193,7 +189,6 @@ dashboards:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3522
   restart: Always
   healthcheck: /api/dashboards/healthcheck
@@ -210,7 +205,6 @@ files:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3509
   volMountPath: /usr/src/app/files
   restart: Always
@@ -234,7 +228,6 @@ forms:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3524
   restart: Always
   healthcheck: /api/forms/healthcheck
@@ -251,7 +244,6 @@ instance:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3518
   restart: Always
   healthcheck: /api/instance/healthcheck
@@ -268,7 +260,6 @@ integrations:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3526
   restart: Always
   healthcheck: /api/integrations/healthcheck
@@ -285,7 +276,6 @@ processes:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3525
   restart: Always
   healthcheck: /api/processes/healthcheck
@@ -302,7 +292,6 @@ reports:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3523
   restart: Always
   healthcheck: /api/reports/healthcheck
@@ -319,7 +308,6 @@ scheduler:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3504
   restart: Always
   healthcheck: /api/scheduler/healthcheck
@@ -336,7 +324,6 @@ sessionProcessor:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   restart: Always
   resources:
     requests:
@@ -351,7 +338,6 @@ settings:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3503
   restart: Always
   healthcheck: /api/settings/healthcheck
@@ -368,7 +354,6 @@ ssp:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3000
   restart: Always
   healthcheck: /
@@ -385,7 +370,6 @@ taskDispatcher:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3519
   restart: Always
   healthcheck: /api/task-dispatcher/healthcheck
@@ -402,7 +386,6 @@ taskProcessor:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   restart: Always
   resources:
     requests:
@@ -417,7 +400,6 @@ tenant:
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
-  tag: Prod
   port: 3505
   restart: Always
   healthcheck: /api/tenant/healthcheck
@@ -433,8 +415,7 @@ user:
   name: api-user
   minReplicas: 1
   maxReplicas: 3
-  avgMemUtilization: 50
-  tag: Prod
+  avgMemUtilization: 50  
   port: 3521
   restart: Always
   healthcheck: /api/user/healthcheck

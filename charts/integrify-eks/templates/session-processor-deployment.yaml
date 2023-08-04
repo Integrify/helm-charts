@@ -21,7 +21,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo }}/{{ .Values.sessionProcessor.repoName}}:{{ .Values.sessionProcessor.tag }}"
+          image: "{{ .Values.image.repo }}/{{ .Values.sessionProcessor.repoName}}:c85bb13"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.sessionProcessor.name }}
           resources:
