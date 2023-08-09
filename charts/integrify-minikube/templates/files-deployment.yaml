@@ -24,7 +24,7 @@ spec:
           env:
           {{- toYaml .Values.globalEnv | nindent 10 }}
           {{- toYaml .Values.files.env | nindent 10 }}
-          image: "{{ .Values.image.repo }}/{{ .Values.files.repoName }}:7edb15d"
+          image: "{{ .Values.image.repo }}/{{ .Values.files.repoName }}:{{ .Values.release }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.files.name }}
           ports:

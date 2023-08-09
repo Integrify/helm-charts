@@ -22,7 +22,7 @@ spec:
               name: integrify-secrets
           env:
           {{- toYaml .Values.globalEnv | nindent 10 }}
-          image: "{{ .Values.image.repo }}/{{ .Values.sessionProcessor.repoName}}:c85bb13"
+          image: "{{ .Values.image.repo }}/{{ .Values.sessionProcessor.repoName}}:{{ .Values.release }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.sessionProcessor.name }}
           volumeMounts:

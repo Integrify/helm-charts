@@ -1,6 +1,7 @@
 # This values.yaml file will allow you to customize the Integrify installation to your specific needs.
 # You will need to update the following parameters at a minimum...
 # appName
+# release
 # secrets: awsCreds
 # secrets: integrifyEnvToken
 # secrets: redisConn
@@ -13,6 +14,8 @@
 
 # Application Parameters
 appName: integrify-minikube
+
+release: # Update with desired release version
 
 host:
   name: integrify.demo
