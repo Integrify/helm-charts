@@ -1,0 +1,1405 @@
+NAME: integrify
+LAST DEPLOYED: Thu Aug 10 10:37:37 2023
+NAMESPACE: dev
+STATUS: pending-install
+REVISION: 1
+TEST SUITE: None
+HOOKS:
+MANIFEST:
+---
+# Source: integrify-minikube/templates/docker-compose-default-networkpolicy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: docker-compose-default
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: integrify-minikube
+  podSelector:
+    matchLabels:
+      app: integrify-minikube
+---
+# Source: integrify-minikube/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integrify-secrets
+data:
+  AWS_CREDS: "eyJhY2Nlc3NLZXlJZCI6IllPVVJfQUNDRVNTX0tFWV9JRCIsInJlZ2lvbiI6InVzLWVhc3QtMSIsInNlY3JldEFjY2Vzc0tleSI6IllPVVJfU0VDUkVUX0FDQ0VTU19LRVkifQ=="
+  REDIS_CONN: "eyJkYjo0IjpudWxsLCJob3N0IjoiaG9zdC5taW5pa3ViZS5pbnRlcm5hbCIsInBvcnQiOjYzNzl9"
+  INTEGRIFY_ENV_TOKEN: MWYwMmY1ZWYtM2NmNi00YTA3LTlkM2YtY2U2MzRkNjc1ZGY1
+  RECAPTCHA_SECURITY_KEY: MWYwMmY1ZWYtM2NmNi00YTA3LTlkM2YtY2U2MzRkNjc1ZGY1
+type: opaque
+---
+# Source: integrify-minikube/templates/configmap.yaml
+apiVersion: v1
+data:
+  config.yml: |
+        client:
+          endpointSecurityChecks: true
+          max_sockets: 5000
+          requestDetailCacheMinutes: 30
+        consumersConn: data source=host.minikube.internal;database=iapi_consumers_k8;user
+          id=sa;password=Integrify6;
+        expiresInAmount: 5
+        expiresInUnit: days
+        jwtSecret: 6adf8b5d-bfee-4fa6-b6a7-358696927592
+        logger:
+          activeConfig: debug
+          debug:
+            console:
+              disabled: false
+            error:
+              color: red
+              disabled: false
+              include:
+              - stack
+              - module
+              path: /{date}_error_{source}.log
+              transport:
+              - console
+            info:
+              color: green
+              disabled: false
+              path: /{date}_info_{source}.log
+              transport:
+              - console
+            milestone:
+              color: white
+              disabled: false
+              transport:
+              - console
+            session:
+              disabled: false
+              format: session_stats
+              path: /{date}_session_stats_{source}.log
+              transport:
+              - console
+            warning:
+              color: yellow
+              disabled: false
+              path: /{date}_warning_{source}.log
+              transport:
+              - console
+          fileDateFormat: YYYY_MM_DD
+          production: {}
+          rootPath: ./logs
+        mongo:
+          connectionString: mongodb://host.minikube.internal:27017
+          options:
+            keepAlive: true
+            poolSize: 10
+            useCreateIndex: true
+            useNewUrlParser: true
+            useUnifiedTopology: true
+        portalUrl: http://integrify.demo
+        service:
+          TimeZoneIndex: "20"
+          debug_logs: "off"
+          querygen_trace: "false"
+          task_processor_interval: 1   
+kind: ConfigMap
+metadata:
+  name: integrifyconfig
+---
+# Source: integrify-minikube/templates/auth-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+spec:
+  selector:
+    integrify.service: auth
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/client-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: workflow
+spec:
+  selector:
+    integrify.service: workflow
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/core-service-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-service
+spec:
+  selector:
+    integrify.service: core-service
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/dashboards-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboards
+spec:
+  selector:
+    integrify.service: dashboards
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/files-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: files
+spec:
+  selector:
+    integrify.service: files
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/forms-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: forms
+spec:
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+  selector:
+    integrify.service: forms
+---
+# Source: integrify-minikube/templates/instance-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: instance
+spec:
+  selector:
+    integrify.service: instance
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/integrations-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: integrations
+spec:
+  selector:
+    integrify.service: integrations
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/processes-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: processes
+spec:
+  selector:
+    integrify.service: processes
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/reports-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: reports
+spec:
+  selector:
+    integrify.service: reports
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/scheduler-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: scheduler
+spec:
+  selector:
+    integrify.service: scheduler
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/settings-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: settings
+spec:
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+  selector:
+    integrify.service: settings
+---
+# Source: integrify-minikube/templates/ssp-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal
+spec:
+  selector:
+    integrify.service: portal
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+# Source: integrify-minikube/templates/task-dispatcher-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-dispatcher
+spec:
+  selector:
+    integrify.service: task-dispatcher
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/tenant-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: tenant
+spec:
+  selector:
+    integrify.service: tenant
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/user-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+spec:
+  selector:
+    integrify.service: user
+  ports:
+    - protocol: TCP
+      port: 3555
+      targetPort: 3555
+---
+# Source: integrify-minikube/templates/auth-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  labels:
+      app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: auth
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: auth
+        app: integrify-minikube
+    spec:
+      containers: 
+        - name: auth
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-auth:v23.08.03-1"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/client-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: workflow
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: workflow
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/client::v23.08.03-1"
+          imagePullPolicy: Always
+          name: workflow
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/config-processor-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-processor
+  labels:
+      app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: config-processor
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: config-processor
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/config-processor::v23.08.03-1"
+          imagePullPolicy: Always
+          name: config-processor
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/core-service-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core-service
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: core-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: core-service
+        app: integrify-minikube
+    spec:
+      containers:
+        - name: core-service
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          - name: MIN_THREADS
+            value: "150"
+          - name: REQUEST_LOGGING
+            value: "off"
+          - name: ASPNETCORE_URLS
+            value: http://*:3555
+          envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/core-service::v23.08.03-1"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/dashboards-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboards
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: dashboards
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: dashboards
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-dashboards::v23.08.03-1"
+          imagePullPolicy: Always
+          name: dashboards
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/files-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: files
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: files
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        integrify.service: files
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          - name: FILE_STORE
+            value: /integrify/files
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-files::v23.08.03-1"
+          imagePullPolicy: Always
+          name: files
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          - name: files-volume
+            mountPath: /integrify/files
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+        - name: files-volume
+          hostPath:
+            path: /host/files
+---
+# Source: integrify-minikube/templates/forms-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forms
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: forms
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: forms
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-forms::v23.08.03-1"
+          imagePullPolicy: Always
+          name: forms
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/instance-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: instance
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: instance
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: instance
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-instance::v23.08.03-1"
+          imagePullPolicy: Always
+          name: instance
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/integrations-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: integrations
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: integrations
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: integrations
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-integrations::v23.08.03-1"
+          imagePullPolicy: Always
+          name: integrations
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/processes-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: processes
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: processes
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: processes
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-processes::v23.08.03-1"
+          imagePullPolicy: Always
+          name: processes
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/reports-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reports
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: reports
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: reports
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-reports::v23.08.03-1"
+          imagePullPolicy: Always
+          name: reports
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/scheduler-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: scheduler
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: scheduler
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/scheduler::v23.08.03-1"
+          imagePullPolicy: Always
+          name: scheduler
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/session-processor-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: session-processor
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: session-processor
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: session-processor
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/session-processor::v23.08.03-1"
+          imagePullPolicy: Always
+          name: session-processor
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/settings-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: settings
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: settings
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: settings
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-settings::v23.08.03-1"
+          imagePullPolicy: Always
+          name: settings
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/ssp-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: portal
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: portal
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/single-spa-portal::v23.08.03-1"
+          imagePullPolicy: Always
+          name: portal
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/task-dispatcher-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-dispatcher
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: task-dispatcher
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: task-dispatcher
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-task-dispatcher::v23.08.03-1"
+          imagePullPolicy: Always
+          name: task-dispatcher
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/task-processor-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-processor
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: task-processor
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: task-processor
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/core-service-tp::v23.08.03-1"
+          imagePullPolicy: Always
+          name: task-processor
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/tenant-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: tenant
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: tenant
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-tenant::v23.08.03-1"
+          imagePullPolicy: Always
+          name: tenant
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/user-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    app: integrify-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      integrify.service: user
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: user
+        app: integrify-minikube
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: integrify-secrets
+          env:
+          - name: PORTAL_URL
+            value: http://integrify.demo
+          - name: CONSOLE_LOG_FORMAT
+            value: text
+          - name: ENV_PLATFORM
+            value: kubernetes
+          - name: PORT
+            value: "3555"
+          image: "940767003169.dkr.ecr.us-east-1.amazonaws.com/api-user::v23.08.03-1"
+          imagePullPolicy: Always
+          name: user
+          ports:
+            - containerPort: 3555
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+---
+# Source: integrify-minikube/templates/integrify-ingress-nginx-http.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: integrify-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: 
+    http:
+      paths:
+        - path: /workflow/napi*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /socket.io*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /workflow/rest-service*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /workflow/api*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /access*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /files*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /instances*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /processes*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /reports*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /tasktypes*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /users*
+          pathType: Prefix
+          backend:
+            service:
+              name: workflow
+              port:
+                number: 3555
+        - path: /core-service*
+          pathType: Prefix
+          backend:
+            service:
+              name: core-service
+              port:
+                number: 3555
+        - path: /api/auth*
+          pathType: Prefix
+          backend:
+            service:
+              name: auth
+              port:
+                number: 3555
+        - path: /api/dashboards*
+          pathType: Prefix
+          backend:
+            service:
+              name: dashboards
+              port:
+                number: 3555
+        - path: /api/files*
+          pathType: Prefix
+          backend:
+            service:
+              name: files
+              port:
+                number: 3555
+        - path: /api/forms*
+          pathType: Prefix
+          backend:
+            service:
+              name: forms
+              port:
+                number: 3555
+        - path: /api/instance*
+          pathType: Prefix
+          backend:
+            service:
+              name: instance
+              port:
+                number: 3555
+        - path: /api/integrations*
+          pathType: Prefix
+          backend:
+            service:
+              name: integrations
+              port:
+                number: 3555
+        - path: /api/processes*
+          pathType: Prefix
+          backend:
+            service:
+              name: processes
+              port:
+                number: 3555
+        - path: /api/reports*
+          pathType: Prefix
+          backend:
+            service:
+              name: reports
+              port:
+                number: 3555
+        - path: /api/schedulers*
+          pathType: Prefix
+          backend:
+            service:
+              name: scheduler
+              port:
+                number: 3555
+        - path: /api/settings*
+          pathType: Prefix
+          backend:
+            service:
+              name: settings
+              port:
+                number: 3555
+        - path: /api/task-dispatcher*
+          pathType: Prefix
+          backend:
+            service:
+              name: task-dispatcher
+              port:
+                number: 3555
+        - path: /api/tenant*
+          pathType: Prefix
+          backend:
+            service:
+              name: tenant
+              port:
+                number: 3555
+        - path: /api/user*
+          pathType: Prefix
+          backend:
+            service:
+              name: user
+              port:
+                number: 3555
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: portal
+              port:
+                number: 3000
+
