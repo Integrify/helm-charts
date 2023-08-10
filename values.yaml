@@ -1,0 +1,276 @@
+
+# This values.yaml file will allow you to customize the Integrify installation to your specific needs.
+# You will need to update the following parameters at a minimum...
+# appName
+# secrets: awsCreds
+# secrets: integrifyEnvToken
+# secrets: redisConn
+# config: consumersConn
+# config: mongo: connectionString
+# config: jwtSecret - you can reference the following to create a unique secret - https://guidgenerator.com/online-guid-generator.aspx
+
+# Application Parameters
+appName: integrify-minikube
+
+#release: latest
+
+host:
+  repoName: integrify.demo
+
+# Application Configuration Parameters
+globalEnv:
+  - name: PORTAL_URL
+    value: "http://integrify.demo"
+  - name: CONSOLE_LOG_FORMAT
+    value: text
+  - name:  ENV_PLATFORM
+    value: kubernetes
+  - name: PORT
+    value: "3555"
+  
+secrets:
+  awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"}
+  integrifyEnvToken: 1f02f5ef-3cf6-4a07-9d3f-ce634d675df5
+  redisConn: {"host":"host.minikube.internal", "port": 6379, db:4}
+  recapthchaSecurityKey: 1f02f5ef-3cf6-4a07-9d3f-ce634d675df5
+  
+config:
+  portalUrl: "http://integrify.demo"
+  consumersConn: "data source=host.minikube.internal;database=iapi_consumers_k8;user id=sa;password=Integrify6;"
+  logger:
+    activeConfig: debug
+    rootPath: ./logs
+    fileDateFormat: YYYY_MM_DD
+    production: {}
+    debug:
+      error:
+        transport:
+          - console
+        color: red
+        path: "/{date}_error_{source}.log"
+        include:
+          - stack
+          - module
+        disabled: false
+      warning:
+        transport:
+          - console
+        color: yellow
+        path: "/{date}_warning_{source}.log"
+        disabled: false
+      info:
+        transport:
+          - console
+        color: green
+        path: "/{date}_info_{source}.log"
+        disabled: false
+      milestone:
+        transport:
+          - console
+        color: white
+        disabled: false
+      session:
+        transport:
+          - console
+        format: session_stats
+        path: "/{date}_session_stats_{source}.log"
+        disabled: false
+      console:
+        disabled: false
+  mongo:
+    connectionString: "mongodb://host.minikube.internal:27017"
+    options:
+      useUnifiedTopology: true
+      useNewUrlParser: true
+      useCreateIndex: true
+      poolSize: 10
+      keepAlive: true
+  client:
+    endpointSecurityChecks: true
+    max_sockets: 5000
+    #port: 3508
+    requestDetailCacheMinutes: 30
+    #core_service_root: "http://integrify.demo/core-service"
+  service:
+    task_processor_interval: 1
+    querygen_trace: "false"
+    debug_logs: "off"
+    TimeZoneIndex: "20"
+  jwtSecret: "6adf8b5d-bfee-4fa6-b6a7-358696927592"
+  expiresInUnit: days
+  expiresInAmount: 5
+
+# Image Parameters
+image:
+  repo: 940767003169.dkr.ecr.us-east-1.amazonaws.com
+  pullPolicy: Always
+  # Pull policy options are IfNotPresent, Always, Never. 
+  # Image pull information can be found here - https://kubernetes.io/docs/concepts/containers/images/
+
+# Ingress Parameters
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+# Services Parameters
+auth:
+  repoName: api-auth
+  name: auth
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+client:
+  repoName: client
+  name: workflow
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+configProcessor:
+  repoName: config-processor
+  name: config-processor
+  replicas: 1
+  tag: latest
+  restart: Always
+
+coreService:
+  repoName: core-service
+  name: core-service
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+  env:
+  - name: MIN_THREADS
+    value: "150"
+  - name: REQUEST_LOGGING
+    value: "off"
+  - name: ASPNETCORE_URLS
+    value: "http://*:3555"
+
+
+dashboards:
+  repoName: api-dashboards
+  name: dashboards
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+files:
+  repoName: api-files
+  name: files
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+  volSize: 250M
+  access: ReadWriteOnce
+  env:
+  - name: FILE_STORE
+    value: '/integrify/files'
+
+forms:
+  repoName: api-forms
+  name: forms
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+instance:
+  repoName: api-instance
+  name: instance
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+integrations:
+  repoName: api-integrations
+  name: integrations
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+processes:
+  repoName: api-processes
+  name: processes
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+reports:
+  repoName: api-reports
+  name: reports
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+scheduler:
+  repoName: scheduler
+  name: scheduler
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+sessionProcessor:
+  repoName: session-processor
+  name: session-processor
+  replicas: 1
+  tag: latest
+  restart: Always
+
+settings:
+  repoName: api-settings
+  name: settings
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+ssp:
+  repoName: single-spa-portal
+  name: portal
+  replicas: 1
+  tag: latest
+  port: 3000
+  restart: Always
+
+taskDispatcher:
+  repoName: api-task-dispatcher
+  name: task-dispatcher
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+taskProcessor:
+  repoName: core-service-tp
+  name: task-processor
+  replicas: 1
+  tag: latest
+  restart: Always
+
+tenant:
+  repoName: api-tenant
+  name: tenant
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always
+
+user:
+  repoName: api-user
+  name: user
+  replicas: 1
+  tag: latest
+  port: 3555
+  restart: Always

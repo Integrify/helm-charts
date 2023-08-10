@@ -22,7 +22,7 @@ spec:
               name: integrify-secrets
           env:
           {{- toYaml .Values.globalEnv | nindent 10 }}
-          image: "{{ .Values.image.repo }}/{{ .Values.taskProcessor.repoName }}:{{ .Values.release }}"
+          image: "{{ .Values.image.repo }}/{{ .Values.taskProcessor.repoName }}::{{ .Values.release | default (printf "v%s" .Chart.AppVersion) }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.taskProcessor.name }}
           volumeMounts:

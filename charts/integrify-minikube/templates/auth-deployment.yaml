@@ -23,7 +23,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo }}/{{ .Values.auth.repoName }}:{{ .Values.release }}"
+          image: "{{ .Values.image.repo }}/{{ .Values.auth.repoName }}:{{ .Values.release | default (printf "v%s" .Chart.AppVersion) }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.auth.port }}
