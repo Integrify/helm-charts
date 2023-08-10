@@ -21,7 +21,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo }}/{{ .Values.tenant.repoName }}:deed413"
+          image: "{{ .Values.image.repo }}/{{ .Values.tenant.repoName }}:{{ .Values.release | default  .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.tenant.name }}
           ports:

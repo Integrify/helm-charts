@@ -21,7 +21,7 @@ spec:
           envFrom:
           - secretRef:
               name: integrify-secrets
-          image: "{{ .Values.image.repo }}/{{ .Values.taskDispatcher.repoName }}:1413c62"
+          image: "{{ .Values.image.repo }}/{{ .Values.taskDispatcher.repoName }}:{{ .Values.release | default  .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Values.taskDispatcher.name }}
           ports:
