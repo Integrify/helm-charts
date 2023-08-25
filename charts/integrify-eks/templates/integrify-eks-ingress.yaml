@@ -38,6 +38,13 @@ spec:
                 name: {{ .Values.client.name }}
                 port:
                   number: {{ .Values.client.port }}
+          - path: /rest-service/files/stream
+            pathType: Prefix
+            backend:
+              service:
+                name: redirect-v7-downloads
+                port:
+                  name: use-annotation
           - path: /access
             pathType: Prefix
             backend:
