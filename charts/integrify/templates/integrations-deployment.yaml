@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.integrations.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.integrations.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.integrations.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "{{ .Values.image.repo}}/{{ .Values.integrations.repoName }}:{{ .Values.release | default  .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.integrations.name }}
+          ports:
+            - containerPort: {{ .Values.integrations.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.integrations.resources.requests.cpu }}
+              memory: {{ .Values.integrations.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.integrations.resources.limits.cpu }}
+              memory: {{ .Values.integrations.resources.limits.memory }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: {{ .Values.integrations.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+status: {}

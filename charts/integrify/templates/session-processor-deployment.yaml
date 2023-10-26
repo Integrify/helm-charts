@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.sessionProcessor.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.sessionProcessor.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.sessionProcessor.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "{{ .Values.image.repo }}/{{ .Values.sessionProcessor.repoName}}:{{ .Values.release | default  .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.sessionProcessor.name }}
+          resources:
+            requests:
+              cpu: {{ .Values.sessionProcessor.resources.requests.cpu }}
+              memory: {{ .Values.sessionProcessor.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.sessionProcessor.resources.limits.cpu }}
+              memory: {{ .Values.sessionProcessor.resources.limits.memory }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: {{ .Values.sessionProcessor.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+status: {}
