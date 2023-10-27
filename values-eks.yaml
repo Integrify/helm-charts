@@ -182,6 +182,8 @@ coreService:
     value: "150"
   - name: REQUEST_LOGGING
     value: "off"
+  - name: ASPNETCORE_URLS
+    value: "http://*:3555"
   resources:
     requests:
       cpu: "1"
