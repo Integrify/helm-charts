@@ -208,7 +208,7 @@ files:
   healthcheck: /api/files/healthcheck
   env:
   - name: FILE_STORE
-    value: "s3://your-s3-files-bucket"
+    value: "/integrify/files"
   resources:
     requests:
       cpu: ".25"
@@ -253,7 +253,7 @@ instance:
 
 integrations:
   repoName: api-integrations
-  anem: integrations
+  name: integrations
   minReplicas: 1
   maxReplicas: 3
   avgMemUtilization: 50
@@ -320,7 +320,7 @@ scheduler:
       memory: "1Gi"
 
 sessionProcessor:
-  repoName: session_processor
+  repoName: session-processor
   name: session-processor
   minReplicas: 1
   maxReplicas: 3
