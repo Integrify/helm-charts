@@ -3,6 +3,16 @@ entries:
   integrify-eks:
   - apiVersion: v2
     appVersion: 23.10.26-1
+    created: "2023-10-31T16:09:48.285183133Z"
+    description: A Helm chart to deploy Integrify in a Kubernetes cluster
+    digest: a872d6351fdcf711448a6e79c25a3495af41f5cc95c01287a149ed0ddc645aef
+    name: integrify-eks
+    type: application
+    urls:
+    - https://github.com/Integrify/helm-charts/releases/download/integrify-eks-1.3.0/integrify-eks-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 23.10.26-1
     created: "2023-10-26T16:23:19.485031057Z"
     description: A Helm chart to deploy Integrify in a Kubernetes cluster
     digest: fd728ffdb2671a5ae15555bc95f1a0c8bcaed563a241db2f25b6840e8ed816e5
@@ -572,4 +582,4 @@ entries:
     urls:
     - https://integrify.github.io/helm-charts/integrify-minikube-0.1.12.tgz
     version: 0.1.12
-generated: "2023-10-26T16:23:19.699369229Z"
+generated: "2023-10-31T16:09:48.28552424Z"
