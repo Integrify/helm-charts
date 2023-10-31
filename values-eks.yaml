@@ -343,8 +343,8 @@ sessionProcessor:
   restart: Always
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: ".5"
+      memory: "1Gi"
     limits:
       cpu: ".5"
       memory: "1Gi"
