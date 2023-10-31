@@ -1,18 +1,17 @@
 # This values-eks.yaml file will allow you to customize the Integrify installation to your specific needs.
-# You will need to update the following parameters at a minimum...
-# frontend: host: name
+
 
 # Application Parameters
 appName: integrify-eks
 
 host:
-  name: integrify.yourdomain.demo
+  name: www.yourdomain.demo
 
 globalEnv:
   - name: PORTAL_URL
-    value: "http://integrify.demo"
+    value: "https://www.yourdomain.demo"
   - name: CONSOLE_LOG_FORMAT
-    value: text
+    value: json
   - name:  ENV_PLATFORM
     value: kubernetes
   - name: PORT
@@ -25,7 +24,7 @@ secrets:
   recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
 
 config:
-  portalUrl: "http://integrify.demo"
+  portalUrl: "https://www.yourdomain.demo"
   featureFlags:
     - id: example-for-tests
       active: true
@@ -186,10 +185,10 @@ coreService:
     value: "http://*:3555"
   resources:
     requests:
-      cpu: "1"
-      memory: "2Gi"
+      cpu: "2"
+      memory: "4Gi"
     limits:
-      cpu: "1"
+      cpu: "2"
       memory: "4Gi"
 
 dashboards:
@@ -224,7 +223,7 @@ files:
   healthcheck: /api/files/healthcheck
   env:
   - name: FILE_STORE
-    value: '/integrify/files'  
+    value: "s3://your-s3-files-bucket"
   resources:
     requests:
       cpu: ".25"
@@ -344,8 +343,8 @@ sessionProcessor:
   restart: Always
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: ".5"
+      memory: "1Gi"
     limits:
       cpu: ".5"
       memory: "1Gi"
