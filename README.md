@@ -8,7 +8,7 @@ Currently, we provide base values files to deploy to [Minikube](https://minikube
 **_Please note: Minikube is designed to be an environment for testing Kubernetes applications. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
 
 ## Setting Up Kubernetes
-Support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation is provided by certified Integrify partners. If you are interested in working with one of our partners, please contact us at customer-service@integrify.com. 
+Support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation is provided by certified Integrify partners. If you are interested in working with one of our partners, please contact us at customer-success@integrify.com. 
 
 Customers wishing to manage the installation themselves can deploy Kubernetes based on their company's best practices and policies.
 
