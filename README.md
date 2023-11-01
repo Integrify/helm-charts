@@ -1,14 +1,16 @@
 # Integrify Helm Charts Repository
 
 ## Summary
-This repository holds the helm chart for deploying Integrify into a Kubernetes cluster. 
+This repository holds the helm chart for deploying Integrify into a [Kubernetes](https://kubernetes.io) cluster. 
 
 Currently, we provide base values files to deploy to [Minikube](https://minikube.sigs.k8s.io/docs/) and [Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html) clusters. These charts are a basic starting point for deployment. You will need to modify these files for your specific environment. We will add more values files as they become available.
 
 **_Please note: Minikube is designed to be an environment for testing Kubernetes applications. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
 
 ## Setting Up Kubernetes
-Support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation is provided by certified Integrify partners. If you are interested in working with one of our partners, please contact us at customer-service@integrify.com. Customers wishing to manage the installation themselves can deploy Kubernetes based on their company's best practices and policies.
+Support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation is provided by certified Integrify partners. If you are interested in working with one of our partners, please contact us at customer-service@integrify.com. 
+
+Customers wishing to manage the installation themselves can deploy Kubernetes based on their company's best practices and policies.
 
 ## Before You Begin
 - You will need to download the proper environment (minikube or EKS) values.yaml template file (available from this repo) and update it with your Integrify installation information prior to deploying the application.
