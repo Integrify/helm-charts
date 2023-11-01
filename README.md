@@ -8,7 +8,7 @@ Currently, we provide base values files to deploy to [Minikube](https://minikube
 **_Please note: Minikube is designed to be an environment for testing Kubernetes applications. We do not recommend, nor do we support, production installations of Integrify in Minikube._**
 
 ## Setting Up Kubernetes
-We do not provide support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation. You can and will need to deploy Kubernetes based upon your company's best practices and policies.
+Support for installing, administering, optimizing, securing, or maintaining your Kubernetes installation is provided by certified Integrify partners. If you are interested in working with one of our partners, please contact us at customer-service@integrify.com. Customers wishing to manage the installation themselves can deploy Kubernetes based on their company's best practices and policies.
 
 ## Before You Begin
 - You will need to download the proper environment (minikube or EKS) values.yaml template file (available from this repo) and update it with your Integrify installation information prior to deploying the application.
