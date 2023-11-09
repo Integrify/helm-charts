@@ -199,13 +199,10 @@ files:
   maxReplicas: 3
   avgMemUtilization: 50
   port: 3555
-  volMountPath: /usr/src/app/files
+  ## use an existing Persistent Volume Claim if not using an S3 bucket
+  # existingClaim: files-pv-claim 
   restart: Always
-  volSize: 250M
-  hostPath: /data/files
-  access: ReadWriteOnce
   healthcheck: /api/files/healthcheck
-  storageClassName: integrify-file-storage #optional- used to map to a PV
   env:
   - name: FILE_STORE
     value: "/integrify/files"

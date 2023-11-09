@@ -37,10 +37,20 @@ spec:
               memory: {{ .Values.files.resources.limits.memory }}
           volumeMounts:
           - name: config-volume
-            mountPath: /app/config
+            mountPath: /app/config  
+            {{ if .Values.files.existingClaim }}      
+          - name: file-storage
+            mountPath: "/integrify/files"
+            {{ end }}
+
       restartPolicy: {{ .Values.files.restart }}
       volumes:
         - name: config-volume
           configMap:
             name: integrifyconfig
+        {{ if .Values.files.existingClaim }}      
+        - name: file-storage
+          persistentVolumeClaim:
+            claimName: files-pv-claim
+        {{ end }}
 status: {}

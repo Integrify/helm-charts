@@ -46,6 +46,5 @@ helm install -f <values.yaml> integrify integrify/integrify
 * [Default](values.yaml) 
 * [Amazon EKS](values-eks.yaml)
   
-  These charts are a basic starting point for deployment. You will need to modify these files for your specific environment. We will add more values files as they become available.
-
+  These charts are a basic starting point for deployment. You will need to modify these files for your specific environment.
 
