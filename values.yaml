@@ -1,0 +1,435 @@
+# This values.yaml file will allow you to customize the Integrify installation to your specific needs.
+
+
+# Application Parameters
+appName: integrify
+host:
+  name: www.yourdomain.demo
+
+globalEnv:
+  - name: PORTAL_URL
+    value: "http://www.yourdomain.demo"
+  - name: CONSOLE_LOG_FORMAT
+    value: text
+  - name:  ENV_PLATFORM
+    value: kubernetes
+  - name: PORT
+    value: "3555"
+
+secrets:
+  awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
+  integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
+  redisConn: {"host":"redis.yourdomain.demo", "port": 6379, "db": 0} # Change host to your Redis server
+  recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
+
+config:
+  portalUrl: "http://www.yourdomain.demo"
+  featureFlags:
+    - id: example-for-tests
+      active: true
+      description: > 
+            used in integration test - do not remove!
+  consumersConn: data source=sql.yourdomain.demo;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
+  logger:
+    activeConfig: debug
+    rootPath: ./logs
+    fileDateFormat: YYYY_MM_DD
+    production: {}
+    debug:
+      error:
+        transport:
+          - console
+        color: red
+        path: "/{date}_error_{source}.log"
+        include:
+          - stack
+          - module
+        disabled: false
+      warning:
+        transport:
+          - console
+        color: yellow
+        path: "/{date}_warning_{source}.log"
+        disabled: false
+      info:
+        transport:
+          - console
+        color: green
+        path: "/{date}_info_{source}.log"
+        disabled: false
+      milestone:
+        transport:
+          - console
+        color: white
+        disabled: false
+      session:
+        transport:
+          - console
+        format: session_stats
+        path: "/{date}_session_stats_{source}.log"
+        disabled: false
+      console:
+        disabled: false
+  mongo:
+    connectionString: "mongodb://mongo.yourdomain.demo:27017" # Change host to your mongo server
+    options:
+      useUnifiedTopology: true
+      useNewUrlParser: true
+      keepAlive: true
+  client:
+    endpointSecurityChecks: true
+    max_sockets: 5000
+    requestDetailCacheMinutes: 30
+  service:
+    task_processor_interval: 1
+    querygen_trace: "false"
+    debug_logs: "off"
+    TimeZoneIndex: "20"
+  jwtSecret: "12345678-1234-1234-1234-123456789ABC" # Example key. You should update with your own secret
+  expiresInUnit: days
+  expiresInAmount: 5
+
+# Image Parameters
+image:
+  repo: 940767003169.dkr.ecr.us-east-1.amazonaws.com
+  pullPolicy: Always
+  # Pull policy options are IfNotPresent, Always, Never. 
+  # Image pull information can be found here - https://kubernetes.io/docs/concepts/containers/images/
+
+# Ingress Parameters
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+# Services information
+auth:
+  repoName: api-auth
+  name: auth
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/auth/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+client:
+  repoName: client
+  name: workflow
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+configProcessor:
+  repoName: config-processor
+  name: config-processor
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  restart: Always
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+coreService:
+  repoName: core-service
+  name: core-service
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /healthcheck
+  env:
+  - name: MIN_THREADS
+    value: "150"
+  - name: REQUEST_LOGGING
+    value: "off"
+  - name: ASPNETCORE_URLS
+    value: "http://*:3555"
+  resources:
+    requests:
+      cpu: "2"
+      memory: "4Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+
+dashboards:
+  repoName: api-dashboards
+  name: dashboards
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/dashboards/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+files:
+  repoName: api-files
+  name: files
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  volMountPath: /usr/src/app/files
+  restart: Always
+  volSize: 250M
+  hostPath: /data/files
+  access: ReadWriteOnce
+  healthcheck: /api/files/healthcheck
+  storageClassName: integrify-file-storage #optional- used to map to a PV
+  env:
+  - name: FILE_STORE
+    value: "/integrify/files"
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+forms:
+  repoName: api-forms
+  name: forms
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/forms/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+instance:
+  repoName: api-instance
+  name: instance
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/instance/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+integrations:
+  repoName: api-integrations
+  name: integrations
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/integrations/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+processes:
+  repoName: api-processes
+  name: processes
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/processes/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+reports:
+  repoName: api-reports
+  name: reports
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/reports/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+scheduler:
+  repoName: scheduler
+  name: scheduler
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/scheduler/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+sessionProcessor:
+  repoName: session-processor
+  name: session-processor
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  restart: Always
+  resources:
+    requests:
+      cpu: ".5"
+      memory: "1Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+settings:
+  repoName: api-settings
+  name: settings
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/settings/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+ssp:
+  repoName: single-spa-portal
+  name: portal
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3000
+  restart: Always
+  healthcheck: /
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+taskDispatcher:
+  repoName: api-task-dispatcher
+  name: task-dispatcher
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/task-dispatcher/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+taskProcessor:
+  repoName: core-service-tp
+  name: task-processor
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  restart: Always
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+tenant:
+  repoName: api-tenant
+  name: tenant
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/tenant/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
+user:
+  repoName: api-user
+  name: user
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50  
+  port: 3555
+  restart: Always
+  healthcheck: /api/user/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
