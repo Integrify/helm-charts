@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doc-proc
+  labels:
+      app: integrify
+spec:
+  selector:
+    matchLabels:
+      integrify.service: doc-proc
+  #strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: doc-proc
+        app: integrify
+    spec:
+      containers:
+      - image: docker.io/pspdfkit/document-engine:nightly
+        imagePullPolicy: Always
+        name: doc-proc
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+#          volumeMounts:
+#          - name: config-volume
+#            mountPath: /app/config
+      restartPolicy: {{ .Values.configProcessor.restart }}
+#      volumes:
+#        - name: config-volume
+#          configMap:
+#            name: integrifyconfig
+status: {}
