@@ -208,6 +208,28 @@ dashboards:
       cpu: ".5"
       memory: "1Gi"
 
+docProc:
+  repoName: api-doc-proc
+  name: doc-proc
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /healthcheck
+  env:
+  - name: REQUEST_LOGGING
+    value: "off"
+  - name: ASPNETCORE_URLS
+    value: "http://*:3555"
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
 files:
   repoName: api-files
   name: files
@@ -448,3 +470,72 @@ user:
     limits:
       cpu: ".5"
       memory: "1Gi"
+
+pspdfkit:
+  license:
+    activationKey: "3-f8c802567de35736c5f6a103f9cce0a8"
+    externalSecret: 
+    #  name: secretName
+      key: 3-f8c802567de35736c5f6a103f9cce0a8
+  auth:
+    api:
+      createSecret: true
+      apiToken: secret
+    dashboard:
+      createSecret: true
+      username: admin
+      password: admin
+  log:
+    level: debug
+  trustedProxies: default
+  signingService:
+    enabled: true
+    url: http://signing-service:6000/sign
+    timeoutSeconds: 10
+  storage:
+    enableMigrationJobs: false
+    databaseEngine: postgresql
+    assetStorageBackend: built-in
+    enableAssetStorageFallback: false
+    postgres:
+      enabled: true
+      host: document-engine-postgresql
+      database: pspdfkit
+      createSecret: true
+      tls:
+        enabled: false
+      auth: 
+        createSecret: true
+        username: postgres
+        password: postgres
+        adminUsername: postgres
+        adminPassword: postgres
+
+postgresql:
+  enabled: true
+  architecture: standalone
+  postgresqlDataDir: /ephemeral/data
+  primary:
+    extraVolumeMounts:
+      - mountPath: /ephemeral
+        name: ephemeral-data
+    extraVolumes:
+      - name: ephemeral-data
+        emptyDir:
+          sizeLimit: 1Gi
+    persistence:
+      enabled: false
+    extendedConfiguration: |
+      log_statement = all
+    pgHbaConfiguration: |
+      host     all             all             0.0.0.0/0               md5
+      host     all             all             ::/0                    md5
+      local   all             all                                     trust
+  auth:
+    enablePostgresUser: true
+    postgresPassword: postgres
+    username: pspdfkit
+    password: pspdfkit
+    database: pspdfkit
+  tls:
+    enabled: false
