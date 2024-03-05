@@ -119,6 +119,23 @@ auth:
       cpu: ".5"
       memory: "1Gi"
 
+browseHouse:
+  repoName: browse-house
+  name: browse-house
+  minReplicas: 1
+  maxReplicas: 3
+  avgMemUtilization: 50
+  port: 3555
+  restart: Always
+  healthcheck: /api/browse-house/healthcheck
+  resources:
+    requests:
+      cpu: ".25"
+      memory: "0.5Gi"
+    limits:
+      cpu: ".5"
+      memory: "1Gi"
+
 client:
   repoName: client
   name: workflow

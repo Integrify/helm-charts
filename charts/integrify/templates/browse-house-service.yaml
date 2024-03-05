@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.browseHouse.name }}
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.browseHouse.healthcheck }}
+spec:
+  selector:
+    integrify.service: {{ .Values.browseHouse.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.browseHouse.port }}
+      targetPort: {{ .Values.browseHouse.port }}
+status:
+  loadBalancer: {}
