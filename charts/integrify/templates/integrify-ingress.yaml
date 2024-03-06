@@ -199,6 +199,13 @@ spec:
                 name: {{ .Values.docProc.name }}
                 port:
                   number: {{ .Values.docProc.port }}
+          - path: /api/browse-house
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.browseHouse.name }}
+                port:
+                  number: {{ .Values.browseHouse.port }}
           - path: /
             pathType: Prefix
             backend:
