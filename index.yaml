@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   integrify:
   - apiVersion: v2
+    appVersion: 24.03.27-1
+    created: "2024-04-05T05:25:08.947614166Z"
+    description: A Helm chart to deploy Integrify in a Kubernetes cluster
+    digest: a6d1d9a986fdc09d055f55762bbf94aeaccc6133c73cf4393bdc33ae2fae6675
+    name: integrify
+    type: application
+    urls:
+    - https://github.com/Integrify/helm-charts/releases/download/integrify-1.3.17/integrify-1.3.17.tgz
+    version: 1.3.17
+  - apiVersion: v2
     appVersion: 24.03.21-1
     created: "2024-03-22T18:59:13.532769511Z"
     description: A Helm chart to deploy Integrify in a Kubernetes cluster
@@ -161,4 +171,4 @@ entries:
     urls:
     - https://github.com/Integrify/helm-charts/releases/download/integrify-1.3.1/integrify-1.3.1.tgz
     version: 1.3.1
-generated: "2024-03-22T18:59:13.532900275Z"
+generated: "2024-04-05T05:25:08.948001547Z"
