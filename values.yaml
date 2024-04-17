@@ -21,6 +21,7 @@ secrets:
   integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
   redisConn: {"host":"redis.yourdomain.demo", "port": 6379, "db": 0} # Change host to your Redis server
   recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
+  credentialsSecret: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own password used to encrypt credentials.
 
 config:
   portalUrl: "http://www.yourdomain.demo"
