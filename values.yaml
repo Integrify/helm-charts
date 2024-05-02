@@ -483,6 +483,25 @@ document-engine:
       api:
         createSecret: true
         apiToken: secret
+        jwt:
+          enabled: true
+          algorithm: RS256
+          createSecret: true
+          publicKey: |
+            -----BEGIN PUBLIC KEY-----
+            MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwubKgvlKtS4ipur4M6Ai
+            4wtSfK+LpM6PhTvc7MFBbX8fB1WEiZVGg+u7D2FyMwfxyG+B501MBM033TzIrE49
+            nxmirG4Jv/PapRXxhbyx8GZmCysT0pEeVCcYzvcWQ5s1MFgBAxmU/cFIPnGPJSQE
+            ixYbHTwf0l/ZvCakku3i24I1GOUJB3tLjTTC9JmsHI4LDOI23BbRy1U+ROZPz4ks
+            Mn2D1lbyBYytBwiqkUWw6PuHPbevnP6XuUKUe/BKMBH0Zbou17LYlkWJk4cwFoOk
+            f72QoVmCcDi5VmuYIdWaiyd4KGwdgXNndl0af9cEGO7SezXX5C0KoOFpTZfxfCei
+            8vKDiud3GTKDca1WviXB7H67lkt/RrYDmnbthkqIT5Y8jYutqWoszGb8drpXZpFU
+            BC0GK7iY+URJqFf2nDOY/RRibs6tXSmZ1qKBkgnJPnZFAylNYzWT1SQBpjDGF9Jg
+            1pob76pPYAh34O5Gtwl+lbws/pC3bCdjnCYOvbuJaRMFmgWubtwyqPAGv1vV8i+p
+            vC/tgvNJTUKiMPebwh26Z4WLiF0uq23Gawfh5tN9y2ToFusUdVgFQa6eMQOGDjdJ
+            /iqtRkJR4fQxe/3OCOWdApwV9VWahl16tkYISar/rgH9paXgag8ji2ZidckhX23s
+            QOfwCljiXKFmJIzYSIN0OFsCAwEAAQ==
+            -----END PUBLIC KEY-----
       dashboard:
         createSecret: true
         username: admin
