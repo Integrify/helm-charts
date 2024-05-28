@@ -15,6 +15,10 @@ globalEnv:
     value: kubernetes
   - name: PORT
     value: "3555"
+  - name: DOCUMENT_ENGINE_INTERNAL_URL
+    value: "http://integrify-document-engine:5000"
+  - name: DOCUMENT_ENGINE_EXTERNAL_URL
+    value: "http://www.yourdomain.demo:5000"
 
 secrets:
   awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
@@ -474,46 +478,99 @@ user:
       memory: "1Gi"
 
 document-engine:
+  # https://pspdfkit.com/guides/document-engine/configuration/overview/
+  # https://pspdfkit.com/guides/document-engine/deployment/product-activation/
+  #
   pspdfkit:
     license:
+      # `ACTIVATION_KEY` or `LICENSE_KEY` (if `isOffline` is `true`)
       activationKey: ""
+      # Is the license offline
+      isOffline: false
+      # Query existing secret for the activation key
       externalSecret: 
-      #  name: secretName
+        # External secret name for license
+        name: document-engine-license
+        # The key in the secret used to retrieve the activation key
         key: DOCUMENT_ENGINE_ACTIVATION_KEY
     auth:
       api:
-        createSecret: true
+        # `API_AUTH_TOKEN` should be long enough
         apiToken: secret
+        jwt:
+          enabled: true
+          algorithm: RS256
+          createSecret: true
+          publicKey: |
+            -----BEGIN PUBLIC KEY-----
+            MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAqX1b9fjwasAL3PDPLBKg
+            QNR9KdCOO4uXqrO3nB1BCy+arpWgCRZmx98rrCcx6FjVVWp8aN9K8CQL0dFZ/5mD
+            f0+URPmHFYq83XM3WH6GoaELpDAS53ja+wt6SfDvNLVTdE6ju/5OnhsKg7U2ic/2
+            CM/kZWrW04K00EWLxQnmuar/5+jds29CuNTA0Kuu5XJEx6BWLfqkUdEkRYpkP0NA
+            dLuUQru9pBTX5mPu7Xt+kJq59p/JtUrcKrXAlnj3UsjP4f8fej+CZetqMkoPOgip
+            mURWtMWZPEDUZuPj2RT5cnKfELnNJBvctmFpoQEc20kXOaZ5/jUn3mqy2RkNkJyc
+            7EvLKyEGtt789KFXT0s4pwpOyEdw/imulw6YtYWlyuiCnkCMxcRB0oYxqkTAkKrR
+            t/OmkUtd9jKcIs7oV1iH1BtB2cvxXC/9rSfG6aVJd/NKHuStPg/q9WdxJBRZvymh
+            J+muon0+kG2GlxiU0o0CPR4rM5WzW3bZFl8W7IWOVIZjRlluHYqsGHm/ocaZk9Cr
+            qjLaDhpBIfhP9BiBp7rwj6BHc3MNi4rwVOw3Jy4iygN/PexDR+xEHipjcXysxsYj
+            oeROBfOu+xloYzFsZMAIlqDXiXoCI7rE0itTavCsUFtybnkHRV14J0jmjB99YTWT
+            PpLat3eBNfZK4xkXw8F6K6kCAwEAAQ==
+            -----END PUBLIC KEY-----
       dashboard:
-        createSecret: true
+        # Enable dashboard
+        enabled: true
+        # `DASHBOARD_USERNAME`
         username: admin
+        # `DASHBOARD_PASSWORD` — will generate a random password if not set
         password: admin
+        # Use an external secret for dashboard credentials instead of the values from `pspdfkit.auth.dashboard.*`
+    # Log level
     log:
       level: debug
+    # `TRUSTED_PROXIES`
     trustedProxies: default
+    # Signing service parameters
     signingService:
+      # Enable signing service integration
       enabled: true
-      url: http://signing-service:6000/sign
+      # `SIGNING_SERVICE_URL`
+      url: https://signing-thing.local/sign
+      # `SIGNING_SERVICE_TIMEOUT` in seconds
       timeoutSeconds: 10
     storage:
+      # Enable separate migration jobs.
+      # It `true`, results in `ENABLE_DATABASE_MIGRATIONS=false` in the main Document Engine container
       enableMigrationJobs: false
+      # Database engine: only `postgresql` is currently supported
       databaseEngine: postgresql
+      # `DATABASE_CONNECTIONS`
+      databaseConnections: 20
+      # `ASSET_STORAGE_BACKEND`
       assetStorageBackend: built-in
+      # `ENABLE_ASSET_STORAGE_FALLBACK`
       enableAssetStorageFallback: false
+      # PostgreSQL database settings
       postgres:
         enabled: true
+        # `PGHOST`
         host: integrify-postgresql
+        # `PGDATABASE`
         database: pspdfkit
-        createSecret: true
+        # `PGUSER`
+        username: postgres
+        # `PGPASSWORD`
+        password: postgres
+        # `PG_ADMIN_USER`
+        adminUsername: postgres
+        # `PG_ADMIN_PASSWORD`
+        adminPassword: postgres
         tls:
+          # `PGSSL`
           enabled: false
-        auth: 
-          createSecret: true
-          username: postgres
-          password: postgres
-          adminUsername: postgres
-          adminPassword: postgres
-
+          # Negated `PGSSL_DISABLE_VERIFY`
+          verify: true
+          # Path from `pspdfkit.trustConfigMaps`, wraps around `PGSSL_CA_CERT_PATH` 
+          trustFileName: ""
   postgresql:
     enabled: true
     architecture: standalone
@@ -542,3 +599,4 @@ document-engine:
       database: pspdfkit
     tls:
       enabled: false
+
