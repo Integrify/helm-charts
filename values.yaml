@@ -574,23 +574,17 @@ document-engine:
   postgresql:
     enabled: true
     architecture: standalone
-    postgresqlDataDir: /ephemeral/data
     primary:
-      extraVolumeMounts:
-        - mountPath: /ephemeral
-          name: ephemeral-data
-      extraVolumes:
-        - name: ephemeral-data
-          emptyDir:
-            sizeLimit: 1Gi
       persistence:
         enabled: false
       extendedConfiguration: |
-        log_statement = all
+        log_statement = ddl
       pgHbaConfiguration: |
-        host     all             all             0.0.0.0/0               md5
-        host     all             all             ::/0                    md5
-        local   all             all                                     trust
+        local    all             all                                trust
+        host     all             all        127.0.0.1/32            trust
+        host     all             all        ::1/128                 trust
+        host     all             all        0.0.0.0/0               md5
+        host     all             all        ::/0                    md5
     auth:
       enablePostgresUser: true
       postgresPassword: postgres
