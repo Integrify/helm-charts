@@ -1,6 +1,6 @@
 dependencies:
 - name: document-engine
   repository: https://pspdfkit.github.io/helm-charts
-  version: 2.8.1
-digest: sha256:e1ea8038f7bb7fd2c78f71770a33c8adc0592774d84da3694985903af4c5998c
-generated: "2024-07-30T07:57:57.523763575-04:00"
+  version: 2.9.0
+digest: sha256:2e8dafb57f227c4f712955da9ea4a46dbfb22ab7e6290f468de2ad8598b6c023
+generated: "2024-08-01T07:51:02.940771677-04:00"
