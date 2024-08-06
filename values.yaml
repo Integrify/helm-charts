@@ -15,10 +15,6 @@ globalEnv:
     value: kubernetes
   - name: PORT
     value: "3555"
-  - name: DOCUMENT_ENGINE_INTERNAL_URL
-    value: "http://integrify-document-engine:5000"
-  - name: DOCUMENT_ENGINE_EXTERNAL_URL
-    value: "http://www.yourdomain.demo:5000"
 
 secrets:
   awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
