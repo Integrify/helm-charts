@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.browseHouse.name }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      integrify.service: {{ .Values.browseHouse.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        integrify.service: {{ .Values.browseHouse.name }}
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - env:
+          {{- toYaml .Values.globalEnv | nindent 10 }}
+          envFrom:
+          - secretRef:
+              name: integrify-secrets
+          image: "{{ .Values.image.repo }}/{{ .Values.browseHouse.repoName }}:{{ .Values.release | default  .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.browseHouse.name }}
+          ports:
+            - containerPort: {{ .Values.browseHouse.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.browseHouse.resources.requests.cpu }}
+              memory: {{ .Values.browseHouse.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.browseHouse.resources.limits.cpu }}
+              memory: {{ .Values.browseHouse.resources.limits.memory }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+      restartPolicy: {{ .Values.browseHouse.restart }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: integrifyconfig
+status: {}
