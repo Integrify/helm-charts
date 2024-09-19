@@ -108,6 +108,13 @@ spec:
                 name: {{ .Values.auth.name }}
                 port:
                   number: {{ .Values.auth.port }}
+          - path: /api/browse-house
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.browseHouse.name }}
+                port:
+                  number: {{ .Values.browseHouse.port }}
           - path: /api/dashboards
             pathType: Prefix
             backend:
