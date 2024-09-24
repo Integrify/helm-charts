@@ -23,3 +23,8 @@ version: 1.4.0
 # It is recommended to use it with quotes.
 appVersion: "24.09.18-1"
 
+dependencies:
+  - name: document-engine
+    version: "3.2.1"
+    repository: "https://pspdfkit.github.io/helm-charts"
+    condition: document-engine.enabled
