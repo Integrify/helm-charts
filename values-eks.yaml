@@ -16,12 +16,15 @@ globalEnv:
     value: kubernetes
   - name: PORT
     value: "3555"
+  - name:  CENTRAL_ROOT
+    value: https://central.integrify.com
 
 secrets:
   awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
   integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
   redisConn: {"host":"redis.yourdomain.demo", "port": 6379, "db": 0} # Change host to your Redis server
   recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
+  credentialsSecret: abcdefgh-1234-abcd-5678-abcdefgh1234 # Example key. You should replace with your own secret.
 
 config:
   portalUrl: "https://www.yourdomain.demo"
@@ -31,52 +34,13 @@ config:
       description: > 
             used in integration test - do not remove!
   consumersConn: data source=sql.yourdomain.demo;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
-  logger:
-    activeConfig: debug
-    rootPath: ./logs
-    fileDateFormat: YYYY_MM_DD
-    production: {}
-    debug:
-      error:
-        transport:
-          - console
-        color: red
-        path: "/{date}_error_{source}.log"
-        include:
-          - stack
-          - module
-        disabled: false
-      warning:
-        transport:
-          - console
-        color: yellow
-        path: "/{date}_warning_{source}.log"
-        disabled: false
-      info:
-        transport:
-          - console
-        color: green
-        path: "/{date}_info_{source}.log"
-        disabled: false
-      milestone:
-        transport:
-          - console
-        color: white
-        disabled: false
-      session:
-        transport:
-          - console
-        format: session_stats
-        path: "/{date}_session_stats_{source}.log"
-        disabled: false
-      console:
-        disabled: false
   mongo:
     connectionString: "mongodb://mongo.yourdomain.demo:27017" # Change host to your mongo server
     options:
       useUnifiedTopology: true
       useNewUrlParser: true
       keepAlive: true
+      maxPoolSize: 100
   client:
     endpointSecurityChecks: true
     max_sockets: 5000
@@ -89,6 +53,16 @@ config:
   jwtSecret: "12345678-1234-1234-1234-123456789ABC" # Example key. You should update with your own secret
   expiresInUnit: days
   expiresInAmount: 5
+    documentEngine:
+    containerUrl: "http://integrify-document-engine:5000"
+    viewerUrl: "http://www.yourdomain.demo:5000"
+    apiToken: "12345678-1234-1234-1234-123456789ABC" # Replace with your own document-engine API token
+    privateKey: |-
+            -----BEGIN RSA PRIVATE KEY-----
+            PASTE YOUR PRIVATE KEY HERE
+            KEY SHOULD BE IN PEM FORMAT
+            -----END RSA PRIVATE KEY-----
+    # Steps to generate public and private key can be found here - https://pspdfkit.com/guides/document-engine/viewer/client-authentication/generate-a-jwt/
 
 # Image Parameters
 image:
@@ -448,3 +422,74 @@ user:
     limits:
       cpu: ".5"
       memory: "1Gi"
+
+documentEngine:
+  pspdfkit:
+    name: integrify-document-engine
+    port: 5000
+
+document-engine:
+  # https://pspdfkit.com/guides/document-engine/configuration/overview/
+  # https://pspdfkit.com/guides/document-engine/deployment/product-activation/
+  #
+  enabled: true
+  documentEngineLicense:
+    externalSecret: 
+      name: document-engine-license
+      # The key in the secret used to retrieve the activation key
+      key: DOCUMENT_ENGINE_ACTIVATION_KEY
+  apiAuth:
+    # `API_AUTH_TOKEN` should be long enough
+    #apiToken: "62734eaf-3fbb-40eb-8923-d39f79570d49" # this is the original token
+    apiToken: "12345678-1234-1234-1234-123456789ABC"
+    # Should be the same as the document-engine API token in the config section above
+    jwt:
+      enabled: true
+      algorithm: RS256
+      createSecret: true
+      publicKey: |
+        -----BEGIN PUBLIC KEY-----
+        PASTE YOUR PUBLIC KEY HERE
+        KEY SHOULD BE IN PEM FORMAT
+        -----END PUBLIC KEY-----
+  dashboard:
+    enabled: true
+    auth:
+      username: admin
+      password: admin
+  database:
+    enabled: true
+    engine: postgres
+    migrationJob:
+      enabled: false
+    postgres:
+      enabled: true
+      host: integrify-postgresql
+      database: document-engine
+      auth:
+        username: postgres # You can set your own username
+        password: postgres # You can set your own password
+        adminUsername: postgres
+        adminPassword: postgres # You can set your own password
+      tls:
+        enabled: false
+  postgresql:
+    enabled: true
+    architecture: standalone
+    primary:
+      persistence:
+        enabled: false
+      extendedConfiguration: |
+        log_statement = all
+      pgHbaConfiguration: |
+        local    all             all                                trust
+        host     all             all        127.0.0.1/32            trust
+        host     all             all        ::1/128                 trust
+        host     all             all        0.0.0.0/0               trust
+        host     all             all        ::/0                    trust
+    auth:
+      enablePostgresUser: true
+      postgresPassword: postgres # You can set your own password - this should be the same as adminPassword above
+      database: document-engine
+    tls:
+      enabled: false
