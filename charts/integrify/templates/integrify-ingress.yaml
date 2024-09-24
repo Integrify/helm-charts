@@ -17,13 +17,6 @@ spec:
                 name: {{ .Values.client.name }}
                 port:
                   number: {{ .Values.client.port }}
-          - path: /socket.io
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.client.name }}
-                port:
-                  number: {{ .Values.client.port }}
           - path: /workflow/rest-service
             pathType: Prefix
             backend:
@@ -108,6 +101,13 @@ spec:
                 name: {{ .Values.auth.name }}
                 port:
                   number: {{ .Values.auth.port }}
+          - path: /api/browse-house
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.browseHouse.name }}
+                port:
+                  number: {{ .Values.browseHouse.port }}
           - path: /api/dashboards
             pathType: Prefix
             backend:
