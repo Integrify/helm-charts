@@ -210,30 +210,6 @@ dashboards:
       cpu: ".5"
       memory: "1Gi"
 
-docProc:
-  repoName: api-doc-proc
-  name: doc-proc
-  minReplicas: 1
-  maxReplicas: 3
-  avgMemUtilization: 50
-  port: 3555
-  restart: Always
-  healthcheck: /healthcheck
-  env:
-  - name: GDPICTURE_LICENSE_KEY
-    value: "909090909090909090909090909"
-  - name: REQUEST_LOGGING
-    value: "off"
-  - name: ASPNETCORE_URLS
-    value: "http://*:3555"
-  resources:
-    requests:
-      cpu: ".25"
-      memory: "0.5Gi"
-    limits:
-      cpu: ".5"
-      memory: "1Gi"
-
 files:
   repoName: api-files
   name: files
