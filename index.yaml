@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   integrify:
   - apiVersion: v2
+    appVersion: 8.5.1
+    created: "2025-07-09T02:48:27.646086282Z"
+    dependencies:
+    - condition: document-engine.enabled
+      name: document-engine
+      repository: https://pspdfkit.github.io/helm-charts
+      version: ^4.0.0
+    description: A Helm chart to deploy Integrify in a Kubernetes cluster
+    digest: 1342a2cec22981c1f686034fdac289f5f723bd2ceafa636806c29ffb7209bc74
+    name: integrify
+    type: application
+    urls:
+    - https://github.com/Integrify/helm-charts/releases/download/integrify-1.5.4/integrify-1.5.4.tgz
+    version: 1.5.4
+  - apiVersion: v2
     appVersion: 8.4.1
     created: "2025-06-26T00:27:35.67265855Z"
     dependencies:
@@ -311,4 +326,4 @@ entries:
     urls:
     - https://github.com/Integrify/helm-charts/releases/download/integrify-1.3.1/integrify-1.3.1.tgz
     version: 1.3.1
-generated: "2025-06-26T00:27:35.672975171Z"
+generated: "2025-07-09T02:48:27.646312204Z"
