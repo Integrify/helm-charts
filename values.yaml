@@ -1,14 +1,10 @@
-# This values.yaml file will allow you to customize the Integrify installation to your specific needs.
-
-
-# Application Parameters
-appName: integrify
+appName: "Nutrient-Workflow"
 host:
-  name: www.yourdomain.demo
+  name: test.your_domain.com
 
 globalEnv:
   - name: PORTAL_URL
-    value: "http://www.yourdomain.demo"
+    value: "https://test.your_domain.com"
   - name: CONSOLE_LOG_FORMAT
     value: text
   - name:  ENV_PLATFORM
@@ -21,20 +17,21 @@ globalEnv:
 secrets:
   awsCreds: {"accessKeyId": "YOUR_ACCESS_KEY_ID", "secretAccessKey": "YOUR_SECRET_ACCESS_KEY", "region": "us-east-1"} # Example key. You should replace with your own AWS creds.
   integrifyEnvToken: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own ENV key.
-  redisConn: {"host":"redis.yourdomain.demo", "port": 6379, "db": 0} # Change host to your Redis server
+  redisConn: {"host":"redishost.your_domain.com", "port": 6379, "db": 0} # Change host to your Redis server
   recapthchaSecurityKey: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own recaptcha key.
-  credentialsSecret: abcdefgh-1234-abcd-5678-abcdefgh1234 # Example key. You should replace with your own secret.
+  credentialsSecret: 12345678-1234-1234-1234-123456789ABC # Example key. You should replace with your own secret.
+  docAuthLicense: '[{ "domain": "test.your_domain.com", "key": "YOUR_DOCUMENT_AUTHORING_KEY"}]'
 
 config:
-  portalUrl: "http://www.yourdomain.demo"
+  portalUrl: "https://test.your_domain.com"
   featureFlags:
     - id: example-for-tests
       active: true
       description: > 
             used in integration test - do not remove!
-  consumersConn: data source=sql.yourdomain.demo;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER_ID;password=DATABASE_USER_PASSWORD;
+  consumersConn: data source=sqlhost.your_domain.com;database=CONSUMERS_DATABASE_NAME;user id=DATABASE_USER;password=DATABASE_PASSWORD;
   mongo:
-    connectionString: "mongodb://mongo.yourdomain.demo:27017" # Change host to your mongo server
+    connectionString: "mongodb://mongohost.your_domain.com:27017" # Change host to your mongo server
     options:
       useUnifiedTopology: true
       useNewUrlParser: true
@@ -53,13 +50,12 @@ config:
   expiresInUnit: days
   expiresInAmount: 5
   documentEngine:
-    containerUrl: "http://integrify-document-engine:5000"
-    viewerUrl: "http://www.yourdomain.demo:5000"
-    apiToken: "12345678-1234-1234-1234-123456789ABC" # Replace with your own document-engine API token
+    containerUrl: "http://test-document-engine:5000"
+    viewerUrl: "https://test-de.your_domain.com"
+    apiToken: "12345678-1234-1234-1234-123456789ABC" # Replace with your own document-engine API token. This token should also be added in the document-engine.apiAuth.apiToken section below
     privateKey: |-
             -----BEGIN RSA PRIVATE KEY-----
-            PASTE YOUR PRIVATE KEY HERE
-            KEY SHOULD BE IN PEM FORMAT
+            YOUR JWT PRIVATE KEY
             -----END RSA PRIVATE KEY-----
     # Steps to generate public and private key can be found here - https://pspdfkit.com/guides/document-engine/viewer/client-authentication/generate-a-jwt/
 
@@ -74,6 +70,7 @@ image:
 ingress:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "25m"
 
 # Services information
 auth:
@@ -136,8 +133,8 @@ configProcessor:
   restart: Always
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: ".5"
+      memory: "1Gi"
     limits:
       cpu: ".5"
       memory: "1Gi"
@@ -191,7 +188,7 @@ files:
   avgMemUtilization: 50
   port: 3555
   ## use an existing Persistent Volume Claim if not using an S3 bucket
-  # existingClaim: files-pv-claim 
+  existingClaim: files-pv-claim 
   restart: Always
   healthcheck: /api/files/healthcheck
   env:
@@ -420,25 +417,20 @@ user:
       memory: "0.5Gi"
     limits:
       cpu: ".5"
+      memory: "0.5Gi"
       
 documentEngine:
   pspdfkit:
-    name: integrify-document-engine
+    name: test-document-engine
     port: 5000
 
 document-engine:
-  # https://pspdfkit.com/guides/document-engine/configuration/overview/
-  # https://pspdfkit.com/guides/document-engine/deployment/product-activation/
-  #
   enabled: true
   documentEngineLicense:
     externalSecret: 
       name: document-engine-license
-      # The key in the secret used to retrieve the activation key
       key: DOCUMENT_ENGINE_ACTIVATION_KEY
   apiAuth:
-    # `API_AUTH_TOKEN` should be long enough
-    #apiToken: "62734eaf-3fbb-40eb-8923-d39f79570d49" # this is the original token
     apiToken: "12345678-1234-1234-1234-123456789ABC"
     # Should be the same as the document-engine API token in the config section above
     jwt:
@@ -447,8 +439,7 @@ document-engine:
       createSecret: true
       publicKey: |
         -----BEGIN PUBLIC KEY-----
-        PASTE YOUR PUBLIC KEY HERE
-        KEY SHOULD BE IN PEM FORMAT
+        YOUR JWT PUBLIC KEY
         -----END PUBLIC KEY-----
   dashboard:
     enabled: true
@@ -457,37 +448,32 @@ document-engine:
       password: admin
   database:
     enabled: true
-    engine: postgres
-    migrationJob:
-      enabled: false
     postgres:
-      enabled: true
-      host: integrify-postgresql
+      host: "{{ .Release.Name }}-document-engine-postgres-rw"
       database: document-engine
-      auth:
-        username: postgres # You can set your own username
-        password: postgres # You can set your own password
-        adminUsername: postgres
-        adminPassword: postgres # You can set your own password
-      tls:
-        enabled: false
-  postgresql:
+      username: postgres
+      password: nutrientDocumentEngine
+      adminUsername: postgres
+      adminPassword: nutrientDocumentEngine
+  cloudNativePG:
     enabled: true
-    architecture: standalone
-    primary:
-      persistence:
-        enabled: false
-      extendedConfiguration: |
-        log_statement = all
-      pgHbaConfiguration: |
-        local    all             all                                trust
-        host     all             all        127.0.0.1/32            trust
-        host     all             all        ::1/128                 trust
-        host     all             all        0.0.0.0/0               trust
-        host     all             all        ::/0                    trust
-    auth:
-      enablePostgresUser: true
-      postgresPassword: postgres # You can set your own password - this should be the same as adminPassword above
-      database: document-engine
-    tls:
-      enabled: false
+    clusterName: "{{ .Release.Name }}-document-engine-postgres"
+    operatorNamespace: cnpg-system
+    operatorReleaseName: cloudnative-pg
+    clusterSpec:
+      instances: 1
+      storage:
+        size: 512Mi
+        storageClass: standard
+      enableSuperuserAccess: true
+      bootstrap:
+        initdb:
+          database: nutrient
+          owner: whatever
+      logLevel: warning
+    superuserSecret:
+      create: true
+      username: postgres
+      password: nutrientDocumentEngine
+    networkPolicy:
+      enabled: true
