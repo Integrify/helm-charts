@@ -194,6 +194,11 @@ files:
   env:
   - name: FILE_STORE
     value: "/integrify/files"
+  # Use the below environment variables if connecting to an S3 compatible storage solution, ie MinIO
+  #- name: FILE_STORE_ENDPOINT
+  #  value: "http://host.minikube.internal:9000"
+  #- name: FORCE_FILE_STORE_PATH_STYLE
+  #  value: "true"
   resources:
     requests:
       cpu: ".25"
