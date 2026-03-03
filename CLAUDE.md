@@ -44,6 +44,24 @@ Every Nutrient Workflow Automation microservice follows the same three-file patt
 - `session-processor` and `task-processor` have no per-service env (only `globalEnv`).
 - `document-engine` is an optional subchart dependency (condition: `document-engine.enabled`) sourced from the PSPDFKit Helm repo.
 
+## Ingress Controller Support
+
+Three deployment environments are supported, configured via `ingress.controller` in values.yaml:
+
+| Value | Environment | Notes |
+|---|---|---|
+| `nginx-f5` | On-premise (default) | F5 NGINX Ingress Controller; uses `nginx.org/*` annotations |
+| `nginx-community` | On-premise (legacy) | ingress-nginx — **retired March 2026**, avoid for new deployments |
+| `alb` | AWS | AWS Load Balancer Controller; uses `alb.ingress.kubernetes.io/*` annotations |
+| `gce` | GKE | Google Cloud external HTTP(S) LB |
+| `gce-internal` | GKE | Google Cloud internal HTTP(S) LB |
+
+**`ingress.controller` vs `ingress.className`:** `controller` is used internally by the chart to conditionally render resources. `className` sets `ingressClassName` on the Ingress spec and should match the class configured on the controller (both F5 and ingress-nginx default to `nginx`; omit to preserve classless behaviour).
+
+**`serviceType`:** Must be `NodePort` for GCE ingress; defaults to `ClusterIP` for nginx-f5 and ALB (ALB with `target-type: ip` also works with `ClusterIP`).
+
+**Legacy redirect path:** `/rest-service/files/stream` (routes to `redirect-v7-downloads` via the `use-annotation` port convention) is only rendered for `nginx-community` and `alb`. The ALB redirect target annotation (`alb.ingress.kubernetes.io/actions.redirect-v7-downloads`) is not yet documented — the redirect destination needs to be confirmed before adding to the values example.
+
 ## Versioning & Release
 
 Releases are automated: merging to `main` triggers `helm/chart-releaser-action`, which packages the chart, creates a GitHub Release tagged `nutrient-workflow-automation-<chart-version>`, and updates the `gh-pages` branch index so `helm repo add` consumers receive the update.
