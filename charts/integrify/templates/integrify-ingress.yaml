@@ -7,6 +7,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
   rules:
     - http:
         paths:
@@ -31,6 +34,8 @@ spec:
                 name: {{ .Values.client.name }}
                 port:
                   number: {{ .Values.client.port }}
+          {{- /* Legacy v7 download redirect. ALB requires an alb.ingress.kubernetes.io/actions.redirect-v7-downloads annotation defining the redirect target. */}}
+          {{- if or (eq (.Values.ingress.controller | default "") "nginx-community") (eq (.Values.ingress.controller | default "") "alb") }}
           - path: /rest-service/files/stream
             pathType: Prefix
             backend:
@@ -38,6 +43,7 @@ spec:
                 name: redirect-v7-downloads
                 port:
                   name: use-annotation
+          {{- end }}
           - path: /access
             pathType: Prefix
             backend:

@@ -73,9 +73,65 @@ serviceType: ClusterIP
 
 # Ingress Parameters
 ingress:
+  # controller identifies which ingress controller is in use. This is separate from className and
+  # is used internally by the chart to control which resources and path rules are rendered.
+  # Options:
+  #   nginx-f5        - F5 NGINX Ingress Controller (on-premise, default)
+  #   nginx-community - ingress-nginx community controller (DEPRECATED - retired March 2026)
+  #   alb             - AWS Load Balancer Controller (AWS)
+  #   gce             - Google Cloud external HTTP(S) load balancer (GKE)
+  #   gce-internal    - Google Cloud internal HTTP(S) load balancer (GKE)
+  controller: nginx-f5
+
+  # className selects which ingress controller manages this ingress resource.
+  # Both F5 NGINX and ingress-nginx default to "nginx". Set this if your controller
+  # is configured with a non-default class name.
+  # className: nginx
+
+  # annotations are passed directly to the ingress resource and vary by ingress controller.
+  # Replace the contents of this block to match your target environment.
+  #
+  # -- F5 NGINX Ingress Controller (on-premise) --
+  # Full annotation reference: https://docs.nginx.com/nginx-ingress-controller/configuration/ingress-resources/advanced-configuration-with-annotations/
+  # path-regex enables regular expression path matching. Values: case_sensitive, case_insensitive, exact.
+  # client-max-body-size sets the maximum allowed request body size, which must be large
+  # enough to accommodate file uploads (default limit is 1m).
+  #
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+    nginx.org/path-regex: "case_sensitive"
+    nginx.org/client-max-body-size: "25m"
+  #
+  # -- ingress-nginx (DEPRECATED - retired March 2026) --
+  # Full annotation reference: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
+  #
+  # annotations:
+  #   nginx.ingress.kubernetes.io/use-regex: "true"
+  #   nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+  #
+  # -- AWS Load Balancer Controller (ALB) --
+  # Full annotation reference: https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/annotations/
+  # scheme sets whether the ALB is internet-facing or internal.
+  # target-type must match the serviceType set above (ip requires CNI, instance requires NodePort).
+  # listen-ports defines which ports the ALB listens on.
+  # ssl-redirect redirects HTTP traffic to HTTPS via the ALB.
+  #
+  # annotations:
+  #   kubernetes.io/ingress.class: alb
+  #   alb.ingress.kubernetes.io/scheme: internet-facing
+  #   alb.ingress.kubernetes.io/target-type: ip
+  #   alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+  #   alb.ingress.kubernetes.io/ssl-redirect: "443"
+  #
+  # -- Google Cloud external HTTP(S) load balancer (GKE) --
+  # Full annotation reference: https://cloud.google.com/kubernetes-engine/docs/how-to/load-balance-ingress
+  # global-static-ip-name pins the load balancer to a reserved static external IP.
+  # managed-certificates references a ManagedCertificate resource for Google-managed TLS.
+  # allow-http can be set to "false" to restrict to HTTPS only once a certificate is provisioned.
+  #
+  # annotations:
+  #   kubernetes.io/ingress.global-static-ip-name: your-static-ip-name
+  #   networking.gke.io/managed-certificates: your-managed-cert-name
+  #   kubernetes.io/ingress.allow-http: "true"
 
 # Services information
 auth:
