@@ -66,6 +66,11 @@ image:
   # Pull policy options are IfNotPresent, Always, Never. 
   # Image pull information can be found here - https://kubernetes.io/docs/concepts/containers/images/
 
+# Service type for all Nutrient Workflow Automation services.
+# Defaults to ClusterIP, which is appropriate for nginx ingress controllers.
+# When deploying on GKE with a Google Cloud ingress controller, set this to NodePort.
+serviceType: ClusterIP
+
 # Ingress Parameters
 ingress:
   annotations:

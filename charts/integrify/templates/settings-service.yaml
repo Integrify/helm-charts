@@ -5,6 +5,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.settings.healthcheck }}
 spec:
+  type: {{ .Values.serviceType | default "ClusterIP" }}
   ports:
     - protocol: TCP
       port: {{ .Values.settings.port }}

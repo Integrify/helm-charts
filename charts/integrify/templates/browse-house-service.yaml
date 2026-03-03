@@ -5,6 +5,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.browseHouse.healthcheck }}
 spec:
+  type: {{ .Values.serviceType | default "ClusterIP" }}
   selector:
     integrify.service: {{ .Values.browseHouse.name }}
   ports:
