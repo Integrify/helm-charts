@@ -50,7 +50,7 @@ Every Nutrient Workflow Automation microservice follows the same three-file patt
 - `gce` / `gce-internal` — renders `cloud.google.com/backend-config` pointing to a per-service BackendConfig
 - All others — no service annotations
 
-**Readiness and liveness probes** are added to all deployments that have both a `port` and `healthcheck` value defined (16 services). Both probes hit the same `healthcheck` path.
+**Readiness and liveness probes** are added to all deployments that have both a `port` and `healthcheck` value defined (16 services). Both probes hit the same `healthcheck` path. Timing and `enabled` flag are controlled globally via `probes` in values.yaml — set `probes.enabled: false` as a temporary safety measure when upgrading from a chart version that had no probes.
 
 ## Ingress Controller Support
 
@@ -65,6 +65,8 @@ Three deployment environments are supported, configured via `ingress.controller`
 | `gce-internal` | GKE | Google Cloud internal HTTP(S) LB |
 
 **`ingress.controller` vs `ingress.className`:** `controller` is used internally by the chart to conditionally render resources. `className` sets `ingressClassName` on the Ingress spec and should match the class configured on the controller (both F5 and ingress-nginx default to `nginx`; omit to preserve classless behaviour).
+
+**`host.name`** is used in the ingress rule to restrict routing to a specific hostname. Omitting it produces a catch-all ingress that matches any hostname.
 
 **`serviceType`:** Must be `NodePort` for GCE ingress; defaults to `ClusterIP` for nginx-f5 and ALB (ALB with `target-type: ip` also works with `ClusterIP`).
 

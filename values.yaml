@@ -71,6 +71,20 @@ image:
 # When deploying on GKE with a Google Cloud ingress controller, set this to NodePort.
 serviceType: ClusterIP
 
+# Probe configuration applied to all services that expose a port (16 services).
+# Set enabled: false when upgrading from a chart version that had no probes to avoid
+# stalled rollouts — re-enable once the upgrade is confirmed healthy.
+probes:
+  enabled: true
+  readiness:
+    initialDelaySeconds: 10  # Seconds to wait after container start before first probe
+    periodSeconds: 10        # How often to probe
+    timeoutSeconds: 3        # Seconds before the probe times out
+  liveness:
+    initialDelaySeconds: 30  # Allow more time before liveness kicks in
+    periodSeconds: 15
+    timeoutSeconds: 3
+
 # Ingress Parameters
 ingress:
   # controller identifies which ingress controller is in use. This is separate from className and

@@ -26,18 +26,22 @@ spec:
           name: {{ .Values.user.name }}
           ports:
             - containerPort: {{ .Values.user.port }}
+          {{- if .Values.probes.enabled }}
           readinessProbe:
             httpGet:
               path: {{ .Values.user.healthcheck }}
               port: {{ .Values.user.port }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
           livenessProbe:
             httpGet:
               path: {{ .Values.user.healthcheck }}
               port: {{ .Values.user.port }}
-            initialDelaySeconds: 30
-            periodSeconds: 15
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
+          {{- end }}
           resources:
             requests:
               cpu: {{ .Values.user.resources.requests.cpu }}
