@@ -43,7 +43,7 @@ Every Nutrient Workflow Automation microservice follows the same three-file patt
 - `files` deployment uses `strategy: Recreate` and optionally mounts a PVC (`files.existingClaim`) at `/integrify/files` for local file storage. When not using a PVC, file storage relies on AWS S3 credentials in the Secret.
 - `session-processor`, `task-processor`, and `config-processor` have no exposed port and receive no readiness/liveness probes.
 - `scheduler` has a Service and BackendConfig but no `ports:` in its Deployment — probes are omitted for it too.
-- `document-engine` is an optional subchart dependency (condition: `document-engine.enabled`) sourced from the PSPDFKit Helm repo.
+- `document-engine` is an optional subchart dependency (condition: `document-engine.enabled`) sourced from the PSPDFKit Helm repo. It has its own built-in ingress support configured via `document-engine.ingress.*` in values.yaml — no custom template is needed. Its ingress must use a **separate hostname** from the main application (the main ingress catch-all `/` to SSP makes same-host path routing impractical across all controllers). `document-engine.ingress.className` and `document-engine.ingress.annotations` must be set explicitly — the subchart cannot inherit them from the parent `ingress.*` values. For GCE deployments, a BackendConfig resource must be created manually and referenced via `document-engine.service.annotations`.
 
 **Service annotations** are conditional on `ingress.controller`:
 - `alb` — renders `alb.ingress.kubernetes.io/healthcheck-path` on each Service

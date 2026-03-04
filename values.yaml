@@ -561,3 +561,90 @@ document-engine:
       password: nutrientDocumentEngine
     networkPolicy:
       enabled: true
+
+  # Ingress for the document-engine service.
+  # className and annotations must match the parent ingress.className / ingress.annotations —
+  # the subchart cannot inherit them automatically.
+  #
+  # -- F5 NGINX Ingress Controller (on-premise) --
+  ingress:
+    enabled: false
+    className: nginx
+    annotations:
+      nginx.org/path-regex: "case_sensitive"
+      nginx.org/client-max-body-size: "25m"
+    hosts:
+      - host: test-de.your_domain.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
+    # tls:
+    #   - secretName: document-engine-tls
+    #     hosts:
+    #       - test-de.your_domain.com
+  #
+  # -- ingress-nginx (DEPRECATED - retired March 2026) --
+  # ingress:
+  #   enabled: false
+  #   className: nginx
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/use-regex: "true"
+  #     nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+  #   hosts:
+  #     - host: test-de.your_domain.com
+  #       paths:
+  #         - path: /
+  #           pathType: Prefix
+  #   tls: []
+  #
+  # -- AWS Load Balancer Controller (ALB) --
+  # ingress:
+  #   enabled: false
+  #   className: alb
+  #   annotations:
+  #     kubernetes.io/ingress.class: alb
+  #     alb.ingress.kubernetes.io/scheme: internet-facing
+  #     alb.ingress.kubernetes.io/target-type: ip
+  #     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+  #     alb.ingress.kubernetes.io/ssl-redirect: "443"
+  #   hosts:
+  #     - host: test-de.your_domain.com
+  #       paths:
+  #         - path: /
+  #           pathType: Prefix
+  #   tls: []
+  #
+  # -- Google Cloud HTTP(S) load balancer (GKE) --
+  # NOTE: GKE requires a BackendConfig resource and a service annotation. Add a BackendConfig
+  # manually or extend backendconfigs.yaml, then reference it via service.annotations below.
+  # ingress:
+  #   enabled: false
+  #   className: ""
+  #   annotations:
+  #     kubernetes.io/ingress.global-static-ip-name: your-static-ip-name
+  #     networking.gke.io/managed-certificates: your-managed-cert-name
+  #   hosts:
+  #     - host: test-de.your_domain.com
+  #       paths:
+  #         - path: /
+  #           pathType: Prefix
+  #   tls: []
+  # service:
+  #   annotations:
+  #     cloud.google.com/backend-config: '{"default": "document-engine-backend-config"}'
+
+  # Extra ingresses — use to expose the dashboard on a separate host or path.
+  # Requires dashboard.enabled: true (set above).
+  # extraIngresses:
+  #   dashboard:
+  #     enabled: false
+  #     className: nginx
+  #     annotations:
+  #       nginx.org/path-regex: "case_sensitive"
+  #     hosts:
+  #       - host: test-de.your_domain.com
+  #         paths:
+  #           - path: /dashboard
+  #             pathType: Prefix
+  #     tls: []
