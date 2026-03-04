@@ -1,6 +1,8 @@
 appName: "Nutrient-Workflow"
 host:
   name: test.your_domain.com
+  # tlsSecret: your-tls-secret  # Name of the TLS Secret containing the certificate and key.
+  #                              # Omit for ALB/GCE where TLS is terminated at the load balancer.
 
 globalEnv:
   - name: PORTAL_URL
