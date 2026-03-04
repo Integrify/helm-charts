@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.processes.name }}
           ports:
             - containerPort: {{ .Values.processes.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.processes.healthcheck }}
+              port: {{ .Values.processes.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.processes.healthcheck }}
+              port: {{ .Values.processes.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.processes.resources.requests.cpu }}

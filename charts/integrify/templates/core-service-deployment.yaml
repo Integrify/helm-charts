@@ -27,6 +27,18 @@ spec:
           name: {{ .Values.coreService.name }}
           ports:
           - containerPort: {{ .Values.coreService.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.coreService.healthcheck }}
+              port: {{ .Values.coreService.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.coreService.healthcheck }}
+              port: {{ .Values.coreService.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.coreService.resources.requests.cpu }}

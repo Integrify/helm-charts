@@ -41,8 +41,16 @@ Every Nutrient Workflow Automation microservice follows the same three-file patt
 
 **Notable service behaviors:**
 - `files` deployment uses `strategy: Recreate` and optionally mounts a PVC (`files.existingClaim`) at `/integrify/files` for local file storage. When not using a PVC, file storage relies on AWS S3 credentials in the Secret.
-- `session-processor` and `task-processor` have no per-service env (only `globalEnv`).
+- `session-processor`, `task-processor`, and `config-processor` have no exposed port and receive no readiness/liveness probes.
+- `scheduler` has a Service and BackendConfig but no `ports:` in its Deployment — probes are omitted for it too.
 - `document-engine` is an optional subchart dependency (condition: `document-engine.enabled`) sourced from the PSPDFKit Helm repo.
+
+**Service annotations** are conditional on `ingress.controller`:
+- `alb` — renders `alb.ingress.kubernetes.io/healthcheck-path` on each Service
+- `gce` / `gce-internal` — renders `cloud.google.com/backend-config` pointing to a per-service BackendConfig
+- All others — no service annotations
+
+**Readiness and liveness probes** are added to all deployments that have both a `port` and `healthcheck` value defined (16 services). Both probes hit the same `healthcheck` path.
 
 ## Ingress Controller Support
 
@@ -59,6 +67,8 @@ Three deployment environments are supported, configured via `ingress.controller`
 **`ingress.controller` vs `ingress.className`:** `controller` is used internally by the chart to conditionally render resources. `className` sets `ingressClassName` on the Ingress spec and should match the class configured on the controller (both F5 and ingress-nginx default to `nginx`; omit to preserve classless behaviour).
 
 **`serviceType`:** Must be `NodePort` for GCE ingress; defaults to `ClusterIP` for nginx-f5 and ALB (ALB with `target-type: ip` also works with `ClusterIP`).
+
+**BackendConfig resources** (`backendconfigs.yaml`) are rendered only for `gce` and `gce-internal`, creating one `cloud.google.com/v1 BackendConfig` per service with a health check configured from each service's `healthcheck` and `port` values.
 
 **Legacy redirect path:** `/rest-service/files/stream` (routes to `redirect-v7-downloads` via the `use-annotation` port convention) is only rendered for `nginx-community` and `alb`. The ALB redirect target annotation (`alb.ingress.kubernetes.io/actions.redirect-v7-downloads`) is not yet documented — the redirect destination needs to be confirmed before adding to the values example.
 

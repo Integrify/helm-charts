@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.ssp.name }}
           ports:
             - containerPort: {{ .Values.ssp.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.ssp.healthcheck }}
+              port: {{ .Values.ssp.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.ssp.healthcheck }}
+              port: {{ .Values.ssp.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.ssp.resources.requests.cpu }}

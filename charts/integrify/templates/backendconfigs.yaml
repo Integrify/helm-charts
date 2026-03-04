@@ -1,0 +1,171 @@
+{{- if or (eq (.Values.ingress.controller | default "nginx-f5") "gce") (eq (.Values.ingress.controller | default "nginx-f5") "gce-internal") }}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.auth.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.auth.port }}
+    requestPath: {{ .Values.auth.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.browseHouse.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.browseHouse.port }}
+    requestPath: {{ .Values.browseHouse.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.client.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.client.port }}
+    requestPath: {{ .Values.client.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.coreService.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.coreService.port }}
+    requestPath: {{ .Values.coreService.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.dashboards.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.dashboards.port }}
+    requestPath: {{ .Values.dashboards.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.files.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.files.port }}
+    requestPath: {{ .Values.files.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.forms.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.forms.port }}
+    requestPath: {{ .Values.forms.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.instance.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.instance.port }}
+    requestPath: {{ .Values.instance.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.integrations.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.integrations.port }}
+    requestPath: {{ .Values.integrations.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.processes.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.processes.port }}
+    requestPath: {{ .Values.processes.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.reports.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.reports.port }}
+    requestPath: {{ .Values.reports.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.scheduler.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.scheduler.port }}
+    requestPath: {{ .Values.scheduler.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.settings.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.settings.port }}
+    requestPath: {{ .Values.settings.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.ssp.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.ssp.port }}
+    requestPath: {{ .Values.ssp.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.taskDispatcher.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.taskDispatcher.port }}
+    requestPath: {{ .Values.taskDispatcher.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.tenant.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.tenant.port }}
+    requestPath: {{ .Values.tenant.healthcheck }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.user.name }}-backend-config
+spec:
+  healthCheck:
+    type: HTTP
+    port: {{ .Values.user.port }}
+    requestPath: {{ .Values.user.healthcheck }}
+{{- end }}

@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.tenant.name }}
           ports:
             - containerPort: {{ .Values.tenant.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.tenant.healthcheck }}
+              port: {{ .Values.tenant.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.tenant.healthcheck }}
+              port: {{ .Values.tenant.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.tenant.resources.requests.cpu }}

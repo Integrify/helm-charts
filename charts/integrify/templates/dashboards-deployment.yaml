@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.dashboards.name }}
           ports:
             - containerPort: {{ .Values.dashboards.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dashboards.healthcheck }}
+              port: {{ .Values.dashboards.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dashboards.healthcheck }}
+              port: {{ .Values.dashboards.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.dashboards.resources.requests.cpu }}

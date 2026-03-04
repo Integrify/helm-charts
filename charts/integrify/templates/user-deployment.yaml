@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.user.name }}
           ports:
             - containerPort: {{ .Values.user.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.user.healthcheck }}
+              port: {{ .Values.user.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.user.healthcheck }}
+              port: {{ .Values.user.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.user.resources.requests.cpu }}

@@ -2,8 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.integrations.name }}
+  {{- if eq (.Values.ingress.controller | default "nginx-f5") "alb" }}
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.integrations.healthcheck }}
+  {{- else if or (eq (.Values.ingress.controller | default "nginx-f5") "gce") (eq (.Values.ingress.controller | default "nginx-f5") "gce-internal") }}
+  annotations:
+    cloud.google.com/backend-config: '{"default": "{{ .Values.integrations.name }}-backend-config"}'
+  {{- end }}
 spec:
   type: {{ .Values.serviceType | default "ClusterIP" }}
   selector:

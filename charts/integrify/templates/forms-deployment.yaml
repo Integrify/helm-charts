@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.forms.name }}
           ports:
             - containerPort: {{ .Values.forms.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.forms.healthcheck }}
+              port: {{ .Values.forms.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.forms.healthcheck }}
+              port: {{ .Values.forms.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.forms.resources.requests.cpu }}

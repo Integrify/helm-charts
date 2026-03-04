@@ -28,6 +28,18 @@ spec:
           name: {{ .Values.files.name }}
           ports:
             - containerPort: {{ .Values.files.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.files.healthcheck }}
+              port: {{ .Values.files.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.files.healthcheck }}
+              port: {{ .Values.files.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.files.resources.requests.cpu }}

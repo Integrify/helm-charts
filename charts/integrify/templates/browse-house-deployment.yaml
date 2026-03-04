@@ -26,6 +26,18 @@ spec:
           name: {{ .Values.browseHouse.name }}
           ports:
             - containerPort: {{ .Values.browseHouse.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.browseHouse.healthcheck }}
+              port: {{ .Values.browseHouse.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.browseHouse.healthcheck }}
+              port: {{ .Values.browseHouse.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
           resources:
             requests:
               cpu: {{ .Values.browseHouse.resources.requests.cpu }}
