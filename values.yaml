@@ -175,7 +175,7 @@ browseHouse:
   avgMemUtilization: 80
   port: 3555
   restart: Always
-  healthcheck: /api/instance/healthcheck
+  healthcheck: /api/browse-house/healthcheck
   resources:
     requests:
       cpu: ".25"
