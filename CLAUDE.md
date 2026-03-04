@@ -70,7 +70,7 @@ Three deployment environments are supported, configured via `ingress.controller`
 
 **BackendConfig resources** (`backendconfigs.yaml`) are rendered only for `gce` and `gce-internal`, creating one `cloud.google.com/v1 BackendConfig` per service with a health check configured from each service's `healthcheck` and `port` values.
 
-**Legacy redirect path:** `/rest-service/files/stream` (routes to `redirect-v7-downloads` via the `use-annotation` port convention) is only rendered for `nginx-community` and `alb`. The ALB redirect target annotation (`alb.ingress.kubernetes.io/actions.redirect-v7-downloads`) is not yet documented — the redirect destination needs to be confirmed before adding to the values example.
+**Legacy redirect path:** `/rest-service/files/stream` (routes to `redirect-v7-downloads` via the `use-annotation` port convention) is only rendered for `nginx-community` and `alb`. For ALB, the ingress.annotations block must include `alb.ingress.kubernetes.io/actions.redirect-v7-downloads` with a 301 redirect to `HTTPS://#{host}:#{port}/workflow/napi/files/download?#{query}` — see the ALB example in values.yaml.
 
 ## Versioning & Release
 

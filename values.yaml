@@ -114,6 +114,7 @@ ingress:
   # target-type must match the serviceType set above (ip requires CNI, instance requires NodePort).
   # listen-ports defines which ports the ALB listens on.
   # ssl-redirect redirects HTTP traffic to HTTPS via the ALB.
+  # actions.redirect-v7-downloads defines the 301 redirect for the legacy /rest-service/files/stream path.
   #
   # annotations:
   #   kubernetes.io/ingress.class: alb
@@ -121,6 +122,7 @@ ingress:
   #   alb.ingress.kubernetes.io/target-type: ip
   #   alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
   #   alb.ingress.kubernetes.io/ssl-redirect: "443"
+  #   alb.ingress.kubernetes.io/actions.redirect-v7-downloads: '{"type":"redirect","redirectConfig":{"protocol":"HTTPS","host":"#{host}","port":"#{port}","path":"/workflow/napi/files/download","query":"#{query}","statusCode":"HTTP_301"}}'
   #
   # -- Google Cloud external HTTP(S) load balancer (GKE) --
   # Full annotation reference: https://cloud.google.com/kubernetes-engine/docs/how-to/load-balance-ingress
