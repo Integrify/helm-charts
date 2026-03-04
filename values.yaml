@@ -563,10 +563,10 @@ document-engine:
       enabled: true
 
   # Ingress for the document-engine service.
-  # className and annotations must match the parent ingress.className / ingress.annotations —
-  # the subchart cannot inherit them automatically.
+  # Set className and annotations to match your ingress.controller setting above.
+  # They must be set explicitly here — the subchart cannot inherit from the parent ingress values.
   #
-  # -- F5 NGINX Ingress Controller (on-premise) --
+  # -- F5 NGINX Ingress Controller (ingress.controller: nginx-f5, on-premise) --
   ingress:
     enabled: false
     className: nginx
@@ -584,7 +584,7 @@ document-engine:
     #     hosts:
     #       - test-de.your_domain.com
   #
-  # -- ingress-nginx (DEPRECATED - retired March 2026) --
+  # -- ingress-nginx (ingress.controller: nginx-community, DEPRECATED - retired March 2026) --
   # ingress:
   #   enabled: false
   #   className: nginx
@@ -598,7 +598,7 @@ document-engine:
   #           pathType: Prefix
   #   tls: []
   #
-  # -- AWS Load Balancer Controller (ALB) --
+  # -- AWS Load Balancer Controller (ingress.controller: alb) --
   # ingress:
   #   enabled: false
   #   className: alb
@@ -615,7 +615,7 @@ document-engine:
   #           pathType: Prefix
   #   tls: []
   #
-  # -- Google Cloud HTTP(S) load balancer (GKE) --
+  # -- Google Cloud external HTTP(S) load balancer (ingress.controller: gce / gce-internal, GKE) --
   # NOTE: GKE requires a BackendConfig resource and a service annotation. Add a BackendConfig
   # manually or extend backendconfigs.yaml, then reference it via service.annotations below.
   # ingress:
