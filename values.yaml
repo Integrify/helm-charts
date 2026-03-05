@@ -597,6 +597,10 @@ document-engine:
   #         - path: /
   #           pathType: Prefix
   #   tls: []
+  #   # tls:
+  #   #   - secretName: document-engine-tls
+  #   #     hosts:
+  #   #       - test-de.your_domain.com
   #
   # -- AWS Load Balancer Controller (ingress.controller: alb) --
   # ingress:
