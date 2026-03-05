@@ -70,7 +70,7 @@ Three deployment environments are supported, configured via `ingress.controller`
 
 **`host.tlsSecret`** is optional. When set, a `tls:` block is added to the Ingress spec referencing the named Secret (which must contain `tls.crt` and `tls.key`). Omit for ALB and GCE deployments where TLS is terminated at the load balancer.
 
-**`serviceType`:** Must be `NodePort` for GCE ingress; defaults to `ClusterIP` for nginx-f5 and ALB (ALB with `target-type: ip` also works with `ClusterIP`).
+**`serviceType`:** Defaults to `ClusterIP`. Valid Kubernetes service types are `ClusterIP`, `NodePort`, `LoadBalancer`, and `ExternalName`.
 
 **BackendConfig resources** (`backendconfigs.yaml`) are rendered only for `gce` and `gce-internal`, creating one `cloud.google.com/v1 BackendConfig` per service with a health check configured from each service's `healthcheck` and `port` values.
 

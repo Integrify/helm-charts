@@ -69,8 +69,6 @@ image:
   # Image pull information can be found here - https://kubernetes.io/docs/concepts/containers/images/
 
 # Service type for all Nutrient Workflow Automation services.
-# Defaults to ClusterIP, which is appropriate for nginx ingress controllers.
-# When deploying on GKE with a Google Cloud ingress controller, set this to NodePort.
 serviceType: ClusterIP
 
 # Probe configuration applied to all services that expose a port (16 services).
