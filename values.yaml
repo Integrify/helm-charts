@@ -114,6 +114,10 @@ ingress:
   annotations:
     nginx.org/path-regex: "case_sensitive"
     nginx.org/client-max-body-size: "25m"
+    # nginx.org/websocket-services enables WebSocket proxying for services that use Socket.IO.
+    # The F5 NGINX controller strips the Upgrade header by default, causing 400 errors on WebSocket
+    # handshakes. List every service that calls websocket.init() in its service.js.
+    nginx.org/websocket-services: "auth,browse-house,dashboards,files,forms,instance,integrations,processes,reports,scheduler,settings,task-dispatcher,tenant,user"
   #
   # -- ingress-nginx (DEPRECATED - retired March 2026) --
   # Full annotation reference: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
