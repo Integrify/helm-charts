@@ -7,6 +7,7 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.taskDispatcher.healthcheck }}
   {{- else if or (eq (.Values.ingress.controller | default "nginx-f5") "gce") (eq (.Values.ingress.controller | default "nginx-f5") "gce-internal") }}
   annotations:
+    cloud.google.com/neg: '{"ingress": true}'
     {{- if eq (.Values.serviceType | default "ClusterIP") "NodePort" }}
     cloud.google.com/backend-config: '{"default": "{{ .Values.taskDispatcher.name }}-backend-config"}'
     {{- else }}

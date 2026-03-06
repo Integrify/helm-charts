@@ -377,7 +377,7 @@ scheduler:
   avgMemUtilization: 50
   port: 3555
   restart: Always
-  healthcheck: /api/scheduler/healthcheck
+  healthcheck: /api/schedulers/healthcheck
   resources:
     requests:
       cpu: ".25"
