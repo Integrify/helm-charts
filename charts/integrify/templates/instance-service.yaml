@@ -7,7 +7,11 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.instance.healthcheck }}
   {{- else if or (eq (.Values.ingress.controller | default "nginx-f5") "gce") (eq (.Values.ingress.controller | default "nginx-f5") "gce-internal") }}
   annotations:
+    {{- if eq (.Values.serviceType | default "ClusterIP") "NodePort" }}
     cloud.google.com/backend-config: '{"default": "{{ .Values.instance.name }}-backend-config"}'
+    {{- else }}
+    cloud.google.com/backend-config: '{"ports": {"{{ .Values.instance.port }}": "{{ .Values.instance.name }}-backend-config"}}'
+    {{- end }}
   {{- end }}
 spec:
   type: {{ .Values.serviceType | default "ClusterIP" }}

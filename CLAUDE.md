@@ -47,7 +47,7 @@ Every Nutrient Workflow Automation microservice follows the same three-file patt
 
 **Service annotations** are conditional on `ingress.controller`:
 - `alb` — renders `alb.ingress.kubernetes.io/healthcheck-path` on each Service
-- `gce` / `gce-internal` — renders `cloud.google.com/backend-config` pointing to a per-service BackendConfig
+- `gce` / `gce-internal` — renders `cloud.google.com/backend-config` pointing to a per-service BackendConfig. The annotation format is conditional on `serviceType`: `NodePort` uses `{"default": "..."}` (named port mode); all others use `{"ports": {"<port>": "..."}}` (explicit port, required for ClusterIP/NEG-based ingress)
 - All others — no service annotations
 
 **Readiness and liveness probes** are added to all deployments that have both a `port` and `healthcheck` value defined (16 services). Both probes hit the same `healthcheck` path. Timing and `enabled` flag are controlled globally via `probes` in values.yaml — set `probes.enabled: false` as a temporary safety measure when upgrading from a chart version that had no probes.
