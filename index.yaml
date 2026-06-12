@@ -358,6 +358,22 @@ entries:
     version: 1.3.1
   nutrient-workflow-automation:
   - apiVersion: v2
+    appVersion: 8.17.1
+    created: "2026-06-12T23:58:44.458262967Z"
+    dependencies:
+    - condition: document-engine.enabled
+      name: document-engine
+      repository: https://pspdfkit.github.io/helm-charts
+      version: ^8.0.0
+    description: A Helm chart to deploy Nutrient Workflow Automation in a Kubernetes
+      cluster
+    digest: ac6c0bda6d4be336c489541afea5635f09787973506fce8afd0571230cd06c3f
+    name: nutrient-workflow-automation
+    type: application
+    urls:
+    - https://github.com/Integrify/helm-charts/releases/download/nutrient-workflow-automation-2.8.0/nutrient-workflow-automation-2.8.0.tgz
+    version: 2.8.0
+  - apiVersion: v2
     appVersion: 8.16.0
     created: "2026-06-02T16:01:26.434281771Z"
     dependencies:
@@ -485,4 +501,4 @@ entries:
     urls:
     - https://github.com/Integrify/helm-charts/releases/download/nutrient-workflow-automation-2.0.0/nutrient-workflow-automation-2.0.0.tgz
     version: 2.0.0
-generated: "2026-06-02T16:01:26.434365077Z"
+generated: "2026-06-12T23:58:44.458374415Z"
