@@ -77,73 +77,73 @@ auth:
   repoName: api-auth
   name: auth
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/auth/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "96Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "400m"
+      memory: "512Mi"
 
 browseHouse:
   repoName: browse-house
   name: browse-house
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 80
   port: 3555
   restart: Always
   healthcheck: /api/instance/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "225m"
+      memory: "192Mi"
     limits:
-      cpu: ".5"
+      cpu: "400m"
       memory: "1Gi"
 
 client:
   repoName: client
   name: workflow
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "400m"
+      memory: "512Mi"
 
 configProcessor:
   repoName: config-processor
   name: config-processor
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   restart: Always
   resources:
     requests:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "50m"
+      memory: "96Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "400m"
+      memory: "512Mi"
 
 coreService:
   repoName: core-service
   name: core-service
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
@@ -157,34 +157,34 @@ coreService:
     value: "http://*:3555"
   resources:
     requests:
-      cpu: "2"
-      memory: "4Gi"
+      cpu: "75m"
+      memory: "160Mi"
     limits:
-      cpu: "2"
-      memory: "4Gi"
+      cpu: "400m"
+      memory: "1.25Gi"
 
 dashboards:
   repoName: api-dashboards
   name: dashboards
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/dashboards/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 files:
   repoName: api-files
   name: files
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   ## use an existing Persistent Volume Claim if not using an S3 bucket
@@ -201,229 +201,229 @@ files:
   #  value: "true"
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 forms:
   repoName: api-forms
   name: forms
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/forms/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 instance:
   repoName: api-instance
   name: instance
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/instance/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "100m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "400m"
+      memory: "512Mi"
 
 integrations:
   repoName: api-integrations
   name: integrations
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/integrations/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "75m"
+      memory: "96Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "400m"
+      memory: "768Mi"
 
 processes:
   repoName: api-processes
   name: processes
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/processes/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "400m"
+      memory: "512Mi"
 
 reports:
   repoName: api-reports
   name: reports
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/reports/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 scheduler:
   repoName: scheduler
   name: scheduler
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/scheduler/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "512Mi"
 
 sessionProcessor:
   repoName: session-processor
   name: session-processor
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   restart: Always
   resources:
     requests:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "100m"
+      memory: "224Mi"
     limits:
-      cpu: ".5"
+      cpu: "400m"
       memory: "1Gi"
 
 settings:
   repoName: api-settings
   name: settings
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/settings/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 ssp:
   repoName: single-spa-portal
   name: portal
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3000
   restart: Always
   healthcheck: /
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "256Mi"
 
 taskDispatcher:
   repoName: api-task-dispatcher
   name: task-dispatcher
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/task-dispatcher/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "75m"
+      memory: "96Mi"
     limits:
-      cpu: ".5"
+      cpu: "400m"
       memory: "1Gi"
 
 taskProcessor:
   repoName: core-service-tp
   name: task-processor
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   restart: Always
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 tenant:
   repoName: api-tenant
   name: tenant
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50
   port: 3555
   restart: Always
   healthcheck: /api/tenant/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "1Gi"
+      cpu: "200m"
+      memory: "384Mi"
 
 user:
   repoName: api-user
   name: user
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1
   avgMemUtilization: 50  
   port: 3555
   restart: Always
   healthcheck: /api/user/healthcheck
   resources:
     requests:
-      cpu: ".25"
-      memory: "0.5Gi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: ".5"
-      memory: "0.5Gi"
-      
+      cpu: "200m"
+      memory: "512Mi"
+
 documentEngine:
   pspdfkit:
     name: test-document-engine
