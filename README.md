@@ -37,7 +37,7 @@ helm repo add workflow-automation https://integrify.github.io/helm-charts
 
 Once the repo has been added and your values.yaml file has been updated you can install with...
 ```
-helm install -f <values.yaml> workflow-automation workflow-automation/integrify
+helm install -f <values.yaml> workflow-automation workflow-automation/nutrient-workflow-automation
 ```
 
 ## Sample values
